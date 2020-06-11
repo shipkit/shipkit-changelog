@@ -1,0 +1,22 @@
+sourceSets {
+    integTest {
+    }
+}
+
+gradlePlugin.testSourceSets(sourceSets.integTest)
+configurations.integTestImplementation.extendsFrom(configurations.testImplementation)
+
+task integTest(type: Test) {
+    testClassesDirs = sourceSets.integTest.output.classesDirs
+    classpath = sourceSets.integTest.runtimeClasspath
+}
+
+check {
+    dependsOn(tasks.integTest)
+}
+
+idea {
+    module {
+        testSourceDirs += file('src/integTest/groovy')
+    }
+}

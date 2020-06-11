@@ -1,0 +1,21 @@
+// docs: https://plugins.gradle.org/docs/publish-plugin
+gradlePlugin {
+    plugins {
+        autoVersion {
+            id = 'org.shipkit.changelog'
+            implementationClass = 'org.shipkit.changelog.ChangelogPlugin'
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://github.com/shipkit/org.shipkit.shipkit-changelog'
+    vcsUrl = 'https://github.com/shipkit/org.shipkit.shipkit-changelog.git'
+    plugins {
+        autoVersion {
+            displayName = 'Shipkit changelog plugin'
+            description = 'Generates changelog based on ticked IDs found in commit messages and GitHub pull request information'
+            tags = ['ci', 'shipkit', 'changelog']
+        }
+    }
+}
