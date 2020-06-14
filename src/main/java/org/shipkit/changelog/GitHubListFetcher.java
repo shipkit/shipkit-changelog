@@ -50,6 +50,7 @@ class GitHubListFetcher {
         LOG.info("GitHub API querying page " + queryParamValue(url, "page"));
         LOG.info("GET " + nextPageUrl);
         URLConnection urlConnection = url.openConnection();
+        // GitHub docs on authentication: https://developer.github.com/v3/auth/#authenticating-for-saml-sso
         urlConnection.setRequestProperty("Authorization", "token " + readOnlyAuthToken);
         LOG.info("Established connection to GitHub API");
 
