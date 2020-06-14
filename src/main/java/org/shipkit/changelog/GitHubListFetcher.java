@@ -42,7 +42,6 @@ class GitHubListFetcher {
         // see API doc: https://developer.github.com/v3/issues/
         nextPageUrl = apiUrl + "/repos/" + repository + "/issues?page=1"
                 + "&per_page=100" //default page is 30
-                + "&access_token=" + readOnlyAuthToken
                 + "&state=closed" //default state is open
                 + "&filter=all" //default filter is assigned
                 + "&direction=desc"; //default is desc but setting it explicitly just in case
@@ -51,6 +50,7 @@ class GitHubListFetcher {
         LOG.info("GitHub API querying page " + queryParamValue(url, "page"));
         LOG.info("GET " + nextPageUrl);
         URLConnection urlConnection = url.openConnection();
+        urlConnection.setRequestProperty("Authorization", "token " + readOnlyAuthToken);
         LOG.info("Established connection to GitHub API");
 
         String resetInLocalTime = resetLimitInLocalTimeOrEmpty(urlConnection);
