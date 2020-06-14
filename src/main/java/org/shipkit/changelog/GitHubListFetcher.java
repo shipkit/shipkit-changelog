@@ -19,10 +19,15 @@ class GitHubListFetcher {
     private static final Logger LOG = Logger.getLogger(GitHubListFetcher.class.getName());
 
     private static final String RELATIVE_LINK_NOT_FOUND = "none";
+    private final String readOnlyAuthToken;
+    private final String apiUrl;
+    private final String repository;
     private String nextPageUrl;
 
-    GitHubListFetcher(String nextPageUrl) {
-        this.nextPageUrl = nextPageUrl;
+    GitHubListFetcher(String apiUrl, String repository, String readOnlyAuthToken) {
+        this.apiUrl = apiUrl;
+        this.repository = repository;
+        this.readOnlyAuthToken = readOnlyAuthToken;
     }
 
     boolean hasNextPage() {
@@ -30,9 +35,18 @@ class GitHubListFetcher {
     }
 
     JsonArray nextPage() throws IOException {
-        if (RELATIVE_LINK_NOT_FOUND.equals(nextPageUrl)) {
-            throw new IllegalStateException("GitHub API no more issues to fetch");
+        if (!hasNextPage()) {
+            throw new IllegalStateException("GitHub API no more issues to fetch. Did you run 'hasNextPage()' method?");
         }
+
+        // see API doc: https://developer.github.com/v3/issues/
+        nextPageUrl = apiUrl + "/repos/" + repository + "/issues?page=1"
+                + "&per_page=100" //default page is 30
+                + "&access_token=" + readOnlyAuthToken
+                + "&state=closed" //default state is open
+                + "&filter=all" //default filter is assigned
+                + "&direction=desc"; //default is desc but setting it explicitly just in case
+
         URL url = new URL(nextPageUrl);
         LOG.info("GitHub API querying page " + queryParamValue(url, "page"));
         LOG.info("GET " + nextPageUrl);

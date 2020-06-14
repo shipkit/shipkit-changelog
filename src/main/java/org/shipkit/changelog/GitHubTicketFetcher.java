@@ -30,15 +30,7 @@ class GitHubTicketFetcher {
         Queue<Long> tickets = queuedTicketNumbers(ticketIds);
 
         try {
-            // see API doc: https://developer.github.com/v3/issues/
-            String url = apiUrl + "/repos/" + repository + "/issues?page=1"
-                    + "&per_page=100" //default page is 30
-                    + "&access_token=" + readOnlyAuthToken
-                    + "&state=closed" //default state is open
-                    + "&filter=all" //default filter is assigned
-                    + "&direction=desc"; //default is desc but setting it explicitly just in case
-
-            GitHubListFetcher fetcher = new GitHubListFetcher(url);
+            GitHubListFetcher fetcher = new GitHubListFetcher(apiUrl, repository, readOnlyAuthToken);
 
             while (!tickets.isEmpty() && fetcher.hasNextPage()) {
                 JsonArray page = fetcher.nextPage();
