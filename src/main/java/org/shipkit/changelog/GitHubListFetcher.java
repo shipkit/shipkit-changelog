@@ -18,7 +18,7 @@ class GitHubListFetcher {
 
     private static final Logger LOG = Logger.getLogger(GitHubListFetcher.class.getName());
 
-    private static final String RELATIVE_LINK_NOT_FOUND = "none";
+    private static final String NO_MORE_PAGES = "none";
     private final String readOnlyAuthToken;
     private final String apiUrl;
     private final String repository;
@@ -30,24 +30,30 @@ class GitHubListFetcher {
         this.readOnlyAuthToken = readOnlyAuthToken;
     }
 
+    /**
+     * Returns true when 'nextPage()' was not yet executed
+     * OR when 'nextPage()' was executed and there are more pages
+     */
     boolean hasNextPage() {
-        return !RELATIVE_LINK_NOT_FOUND.equals(nextPageUrl);
+        return !NO_MORE_PAGES.equals(nextPageUrl);
     }
 
+    /**
+     * Gets the next page
+     */
     JsonArray nextPage() throws IOException {
         if (!hasNextPage()) {
-            throw new IllegalStateException("GitHub API no more issues to fetch. Did you run 'hasNextPage()' method?");
+            throw new IllegalStateException("GitHub API has no more issues to fetch. Did you run 'hasNextPage()' method?");
         }
 
         // see API doc: https://developer.github.com/v3/issues/
         nextPageUrl = apiUrl + "/repos/" + repository + "/issues?page=1"
                 + "&per_page=100" //default page is 30
                 + "&state=closed" //default state is open
-                + "&filter=all" //default filter is assigned
+                + "&filter=all" //default filter is 'assigned'
                 + "&direction=desc"; //default is desc but setting it explicitly just in case
 
         URL url = new URL(nextPageUrl);
-        LOG.info("GitHub API querying page " + queryParamValue(url, "page"));
         LOG.info("GET " + nextPageUrl);
         URLConnection urlConnection = url.openConnection();
         // GitHub docs on authentication: https://developer.github.com/v3/auth/#authenticating-for-saml-sso
@@ -59,7 +65,7 @@ class GitHubListFetcher {
         String rateRemaining = urlConnection.getHeaderField("X-RateLimit-Remaining");
         String rateLimit = urlConnection.getHeaderField("X-RateLimit-Limit");
         LOG.info("GitHub API rate info => Remaining : " + rateRemaining + ", Limit : " + rateLimit + ", Reset at: " + resetInLocalTime);
-        nextPageUrl = extractRelativeLink(urlConnection.getHeaderField("Link"));
+        nextPageUrl = getNextPageUrl(urlConnection.getHeaderField("Link"));
 
         return parseJsonFrom(urlConnection);
     }
@@ -71,16 +77,6 @@ class GitHubListFetcher {
         }
         Date resetInEpochSeconds = DateUtil.parseDateInEpochSeconds(rateLimitReset);
         return DateUtil.formatDateToLocalTime(resetInEpochSeconds);
-    }
-
-    private String queryParamValue(URL url, String page) {
-        String query = url.getQuery();
-        for (String param : query.split("&")) {
-            if (param.startsWith(page)) {
-                return param.substring(param.indexOf('=') + 1, param.length());
-            }
-        }
-        return "N/A";
     }
 
     private JsonArray parseJsonFrom(URLConnection urlConnection) throws IOException {
@@ -96,10 +92,10 @@ class GitHubListFetcher {
     }
 
 
-    private String extractRelativeLink(String linkHeader) {
+    private String getNextPageUrl(String linkHeader) {
         if (linkHeader == null) {
             //expected when there are no results
-            return RELATIVE_LINK_NOT_FOUND;
+            return NO_MORE_PAGES;
         }
 
         // See GitHub API doc : https://developer.github.com/guides/traversing-with-pagination/
@@ -112,6 +108,6 @@ class GitHubListFetcher {
                         linkRel.indexOf(">; rel=\"next\""));
             }
         }
-        return RELATIVE_LINK_NOT_FOUND;
+        return NO_MORE_PAGES;
     }
 }
