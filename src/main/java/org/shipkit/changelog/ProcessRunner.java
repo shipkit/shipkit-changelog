@@ -27,8 +27,10 @@ class ProcessRunner {
 
         if (exitValue != 0) {
             throw new RuntimeException(
-                    "Problems executing command (exit code: " + exitValue + "): " + Arrays.toString(commandLine) + "\n" +
-                    "Output:\n" + output);
+                    "Problems executing command (exit code: " + exitValue + "):\n" +
+                            "  command: " + String.join(" ", commandLine) + "\n" +
+                            "  working dir: " + workDir.getAbsolutePath() + "\n" +
+                    "  output:\n" + output);
         }
 
         return output;

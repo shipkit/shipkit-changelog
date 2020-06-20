@@ -1,9 +1,13 @@
 // docs: https://plugins.gradle.org/docs/publish-plugin
 gradlePlugin {
     plugins {
-        autoVersion {
+        changelog {
             id = 'org.shipkit.changelog'
             implementationClass = 'org.shipkit.changelog.ChangelogPlugin'
+        }
+        gitHubRelease {
+            id = 'org.shipkit.gh.release'
+            implementationClass = 'org.shipkit.gh.release.GitHubReleasePlugin'
         }
     }
 }
@@ -12,10 +16,15 @@ pluginBundle {
     website = 'https://github.com/shipkit/org.shipkit.shipkit-changelog'
     vcsUrl = 'https://github.com/shipkit/org.shipkit.shipkit-changelog.git'
     plugins {
-        autoVersion {
+        changelog {
             displayName = 'Shipkit changelog plugin'
             description = 'Generates changelog based on ticked IDs found in commit messages and GitHub pull request information'
             tags = ['ci', 'shipkit', 'changelog']
+        }
+        gitHubRelease {
+            displayName = 'Shipkit GitHub release plugin'
+            description = 'Posts a release to GitHub using the REST API'
+            tags = ['ci', 'shipkit', 'github', 'release']
         }
     }
 }

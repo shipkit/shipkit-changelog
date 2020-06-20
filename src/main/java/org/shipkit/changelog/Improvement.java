@@ -7,8 +7,6 @@ import java.util.Collection;
  */
 public class Improvement {
 
-    private static final String JSON_FORMAT = "{ \"id\": \"%s\", \"title\": \"%s\", \"url\": \"%s\", \"labels\": [%s], \"isPullRequest\": %s }";
-
     private final Long id;
     private final String title;
     private final String url;
