@@ -7,9 +7,12 @@ import org.gradle.api.GradleException;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.TaskAction;
 import org.shipkit.changelog.GitHubApi;
+import org.shipkit.changelog.IOUtil;
 
+import java.io.File;
 import java.io.IOException;
 
 public class GitHubReleaseTask extends DefaultTask {
@@ -20,7 +23,7 @@ public class GitHubReleaseTask extends DefaultTask {
     private String repository = null;
     private String releaseName = null;
     private String releaseTag = null;
-    private String content = null;
+    private File releaseNotes = null;
     private String writeToken = null;
 
     @Input
@@ -59,13 +62,13 @@ public class GitHubReleaseTask extends DefaultTask {
         this.releaseTag = releaseTag;
     }
 
-    @Input
-    public String getContent() {
-        return content;
+    @InputFile
+    public File getReleaseNotes() {
+        return releaseNotes;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setReleaseNotes(File releaseNotes) {
+        this.releaseNotes = releaseNotes;
     }
 
     @Input
@@ -83,7 +86,8 @@ public class GitHubReleaseTask extends DefaultTask {
         JsonObject body = new JsonObject();
         body.add("tag_name", releaseTag);
         body.add("name", releaseName);
-        body.add("body", content);
+        String releaseNotesTxt = IOUtil.readFully(releaseNotes);
+        body.add("body", releaseNotesTxt);
 
         GitHubApi gitHubApi = new GitHubApi(ghApiUrl, writeToken);
         try {
@@ -96,7 +100,7 @@ public class GitHubReleaseTask extends DefaultTask {
                     "  - release tag: " + releaseTag + "\n" +
                     "  - release name: " + releaseName + "\n" +
                     "  - token: " + writeToken.substring(0, 3) + "...\n" +
-                    "  - content:\n" + content + "\n"
+                    "  - content:\n" + releaseNotesTxt + "\n"
                     , e);
         }
     }

@@ -22,9 +22,10 @@ class GitHubReleasePluginIntegTest extends Specification {
     def "fails with clean exception"() {
         file("build.gradle") << """
             version = "1.2.3"
+            file("changelog.md") << "Spanking new release!"            
             tasks.named("githubRelease") {
                 repository = "shipkit/shipkit-changelog"
-                content = "Spanking new release!"
+                releaseNotes = file("changelog.md")
                 writeToken = "secret"
             }
         """
@@ -34,7 +35,7 @@ class GitHubReleasePluginIntegTest extends Specification {
 
         then: //fails because we don't have the credentials
         result.output.contains """Unable to post release to GitHub.
-    - url: /repos/shipkit/shipkit-changelog/releases
+    - url: https://api.github.com/repos/shipkit/shipkit-changelog/releases
     - release tag: v1.2.3
     - release name: v1.2.3
     - token: sec...
@@ -45,12 +46,13 @@ class GitHubReleasePluginIntegTest extends Specification {
     def "task can be configured"() {
         //demonstrates all configuration properties on the task:
         file("build.gradle") << """
+            file("changelog.md") << "Spanking new release!"
             tasks.named("githubRelease") {
                 ghApiUrl = "https://api.github.com"
                 repository = "shipkit/shipkit-changelog"
                 releaseName = "5.0"
                 releaseTag = "RELEASE-5.0"
-                content = "Spanking new release!"
+                releaseNotes = file("changelog.md")
                 writeToken = "secret"
             } 
         """
@@ -60,7 +62,7 @@ class GitHubReleasePluginIntegTest extends Specification {
 
         then: //fails because we don't have the credentials
         result.output.contains """Unable to post release to GitHub.
-    - url: /repos/shipkit/shipkit-changelog/releases
+    - url: https://api.github.com/repos/shipkit/shipkit-changelog/releases
     - release tag: RELEASE-5.0
     - release name: 5.0
     - token: sec...
