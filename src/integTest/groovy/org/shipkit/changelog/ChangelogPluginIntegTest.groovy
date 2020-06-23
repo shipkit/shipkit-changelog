@@ -19,12 +19,21 @@ class ChangelogPluginIntegTest extends Specification {
         """
     }
 
-    def "applies plugin cleanly"() {
+    def "runs changelog generation"() {
         given:
-        def result = run("tasks")
+        file("build.gradle") << """
+            tasks.named("generateChangelog") {
+                fromRev = "v0.0.0"                    
+                toRev = "HEAD"                      
+                outputFile = new File(buildDir, "changelog.md")
+            }
+        """
 
-        expect:
-        result.output.contains("Applying plugin...")
+        when:
+        def result = runner("generateChangelog").build()
+
+        then:
+        result.output.contains "Generating changelog!"
     }
 
     File file(String path) {
@@ -41,12 +50,12 @@ class ChangelogPluginIntegTest extends Specification {
         return tmp.root
     }
 
-    def run(String ...args) {
+    private GradleRunner runner(String... args) {
         def runner = GradleRunner.create()
         runner.forwardOutput()
         runner.withPluginClasspath()
         runner.withArguments(args)
         runner.withProjectDir(rootDir)
-        return runner.build()
+        runner
     }
 }

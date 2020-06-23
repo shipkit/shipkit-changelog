@@ -17,23 +17,23 @@ Minimalistic Gradle plugin that generates changelog based on commit history and 
 //example usage
 apply plugin: "shipkit-changelog"
 
-generateChangelog {
+tasks.named("generateChangelog") {
     fromRev = "v1.0.0" //required, no default value                    
     toRev = "HEAD" //optional, default                      
-    outputFile = "$buildDir/changelog.md" //optional, default
+    outputFile = file("$buildDir/changelog.md") //optional, default
 }
 
 //usage with auto-version plugin
 apply plugin: "shipkit-auto-version"
 apply plugin: "shipkit-changelog"
 
-generateChangelog {
+tasks.named("generateChangelog") {
     fromRev = ext['shipkit-auto-version.previous-tag']
 }
 
 //posting with GitHub
-postGitHubRelease {
-    writeToken = System.getenv("GH_WRITE_TOKEN") //required, not default value
-    releaseNotes = generateChangelog.outputFile //optional, default    
+tasks.named("githubRelease") {
+    writeToken = System.getenv("GH_WRITE_TOKEN") //required, no default value
+    releaseNotes = tasks.named("generateChangelog").get().outputFile //optional, default    
 }
 ```
