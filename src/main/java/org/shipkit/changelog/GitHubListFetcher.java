@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 /**
@@ -76,7 +77,7 @@ class GitHubListFetcher {
             return "";
         }
         Date resetInEpochSeconds = DateUtil.parseDateInEpochSeconds(rateLimitReset);
-        return DateUtil.formatDateToLocalTime(resetInEpochSeconds);
+        return DateUtil.formatDateToLocalTime(resetInEpochSeconds, TimeZone.getDefault());
     }
 
     private JsonArray parseJsonFrom(URLConnection urlConnection) throws IOException {
