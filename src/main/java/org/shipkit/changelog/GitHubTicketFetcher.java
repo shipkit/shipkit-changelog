@@ -3,22 +3,16 @@ package org.shipkit.changelog;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonValue;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 import java.util.logging.Logger;
 
 class GitHubTicketFetcher {
 
     private static final Logger LOG = Logger.getLogger(GitHubTicketFetcher.class.getName());
 
-    Collection<Improvement> fetchTickets(String apiUrl, String repository, String readOnlyAuthToken, Collection<String> ticketIds, Collection<String> labels,
-                                         boolean onlyPullRequests) {
-        List<Improvement> out = new LinkedList<>();
+    Collection<Ticket> fetchTickets(String apiUrl, String repository, String readOnlyAuthToken, Collection<String> ticketIds, Collection<String> labels,
+                                    boolean onlyPullRequests) {
+        List<Ticket> out = new LinkedList<>();
         if (ticketIds.isEmpty()) {
             return out;
         }
@@ -69,25 +63,25 @@ class GitHubTicketFetcher {
         return longs;
     }
 
-    private static List<Improvement> extractImprovements(Collection<Long> tickets, JsonArray issues,
-                                                         boolean onlyPullRequests) {
+    private static List<Ticket> extractImprovements(Collection<Long> tickets, JsonArray issues,
+                                                    boolean onlyPullRequests) {
         if (tickets.isEmpty()) {
             return Collections.emptyList();
         }
 
-        List<Improvement> pagedImprovements = new ArrayList<>();
+        List<Ticket> pagedTickets = new ArrayList<>();
         for (JsonValue issue : issues) {
-            Improvement i = GitHubImprovementsJSON.toImprovement(issue.asObject());
+            Ticket i = GitHubImprovementsJSON.toImprovement(issue.asObject());
             if (tickets.remove(i.getId())) {
                 if (!onlyPullRequests || i.isPullRequest()) {
-                    pagedImprovements.add(i);
+                    pagedTickets.add(i);
                 }
 
                 if (tickets.isEmpty()) {
-                    return pagedImprovements;
+                    return pagedTickets;
                 }
             }
         }
-        return pagedImprovements;
+        return pagedTickets;
     }
 }

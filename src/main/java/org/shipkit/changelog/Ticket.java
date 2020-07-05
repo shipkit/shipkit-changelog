@@ -5,7 +5,7 @@ import java.util.Collection;
 /**
  * Simple POJO that contains all the information of an improvement
  */
-public class Improvement {
+public class Ticket {
 
     private final Long id;
     private final String title;
@@ -13,7 +13,7 @@ public class Improvement {
     private final Collection<String> labels;
     private final boolean isPullRequest;
 
-    public Improvement(Long id, String title, String url, Collection<String> labels, boolean isPullRequest) {
+    public Ticket(Long id, String title, String url, Collection<String> labels, boolean isPullRequest) {
         this.id = id;
         this.title = title;
         this.url = url;
@@ -61,7 +61,7 @@ public class Improvement {
             return false;
         }
 
-        Improvement that = (Improvement) o;
+        Ticket that = (Ticket) o;
 
         if (isPullRequest != that.isPullRequest) {
             return false;

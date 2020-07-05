@@ -20,7 +20,6 @@ class ChangelogPluginIntegTest extends Specification {
     }
 
     def "generates changelog"() {
-        //TODO needs to be based on real repo and unignored. Possibly only run in CI.
         given:
         file("build.gradle") << """
             version = "3.3.11"

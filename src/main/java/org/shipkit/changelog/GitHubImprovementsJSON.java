@@ -1,12 +1,9 @@
 package org.shipkit.changelog;
 
 import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonValue;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -18,14 +15,14 @@ class GitHubImprovementsJSON {
      * Parses GitHub JsonObject in accordance to the API (https://developer.github.com/v3/issues/)
      * @param issue
      */
-    static Improvement toImprovement(JsonObject issue) {
+    static Ticket toImprovement(JsonObject issue) {
         long id = issue.get("number").asLong();
         String issueUrl = issue.get("html_url").asString();
         String title = issue.get("title").asString();
         boolean isPullRequest = issue.get("pull_request") != null;
         Collection<String> labels = extractLabels(issue);
 
-        return new Improvement(id, title, issueUrl, labels, isPullRequest);
+        return new Ticket(id, title, issueUrl, labels, isPullRequest);
     }
 
     private static Collection<String> extractLabels(JsonObject issue) {

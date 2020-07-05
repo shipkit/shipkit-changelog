@@ -81,7 +81,7 @@ public class GitHubReleaseTask extends DefaultTask {
     }
 
     @TaskAction public void postRelease() {
-        String url = "/repos/" + repository + "/releases";
+        String url = ghApiUrl + "/repos/" + repository + "/releases";
 
         JsonObject body = new JsonObject();
         body.add("tag_name", releaseTag);
@@ -89,14 +89,14 @@ public class GitHubReleaseTask extends DefaultTask {
         String releaseNotesTxt = IOUtil.readFully(releaseNotes);
         body.add("body", releaseNotesTxt);
 
-        GitHubApi gitHubApi = new GitHubApi(ghApiUrl, writeToken);
+        GitHubApi gitHubApi = new GitHubApi(writeToken);
         try {
             String response = gitHubApi.post(url, body.toString());
             String htmlUrl = Json.parse(response).asObject().getString("html_url", "");
             LOG.lifecycle("Posted release to GitHub: " + htmlUrl);
         } catch (IOException e) {
             throw new GradleException("Unable to post release to GitHub.\n" +
-                    "  - url: " + ghApiUrl + url + "\n" +
+                    "  - url: " + url + "\n" +
                     "  - release tag: " + releaseTag + "\n" +
                     "  - release name: " + releaseName + "\n" +
                     "  - token: " + writeToken.substring(0, 3) + "...\n" +

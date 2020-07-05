@@ -15,7 +15,7 @@ public class ChangelogFormat {
     /**
      * Builds the changelog String based on the input parameters.
      */
-    public static String formatChangelog(Collection<String> contributors, Collection<Improvement> improvements, int commitCount,
+    public static String formatChangelog(Collection<String> contributors, Collection<Ticket> tickets, int commitCount,
                                          final String version, final String newRev, final String previousRev,
                                          final String gitHubRepoUrl, final String date) {
         String template = "@header@\n" +
@@ -33,17 +33,17 @@ public class ChangelogFormat {
             put("previousRev", previousRev);
             put("newRev", newRev);
             put("contributors", String.join(", ", contributors));
-            put("improvements", formatImprovements(improvements));
+            put("improvements", formatImprovements(tickets));
         }};
 
         return replaceTokens(template, data);
     }
 
-    private static String formatImprovements(Collection<Improvement> improvements) {
-        if (improvements.isEmpty()) {
+    private static String formatImprovements(Collection<Ticket> tickets) {
+        if (tickets.isEmpty()) {
             return " - No notable improvements. No pull requests (issues) were referenced from commits.";
         }
-        return String.join("\n", improvements.stream().map(i -> " - " + i.getTitle() +
+        return String.join("\n", tickets.stream().map(i -> " - " + i.getTitle() +
                 " [(#" + i.getId() + ")](" +
                 i.getUrl() + ")").collect(Collectors.toList()));
     }

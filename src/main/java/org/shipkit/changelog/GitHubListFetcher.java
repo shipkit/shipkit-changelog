@@ -5,30 +5,25 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonValue;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.logging.Logger;
 
 /**
  * This class contains standard operations for skim over GitHub API responses.
  */
 class GitHubListFetcher {
 
-    private static final Logger LOG = Logger.getLogger(GitHubListFetcher.class.getName());
-
     private static final String NO_MORE_PAGES = "none";
     private final String readOnlyAuthToken;
-    private final String apiUrl;
-    private final String repository;
     private String nextPageUrl;
 
     GitHubListFetcher(String apiUrl, String repository, String readOnlyAuthToken) {
-        this.apiUrl = apiUrl;
-        this.repository = repository;
         this.readOnlyAuthToken = readOnlyAuthToken;
+
+        // see API doc: https://developer.github.com/v3/issues/
+        nextPageUrl = apiUrl + "/repos/" + repository + "/issues?page=1"
+                + "&per_page=100" //default page is 30
+                + "&state=closed" //default state is open
+                + "&filter=all" //default filter is 'assigned'
+                + "&direction=desc"; //default is desc but setting it explicitly just in case
     }
 
     /**
@@ -47,51 +42,18 @@ class GitHubListFetcher {
             throw new IllegalStateException("GitHub API has no more issues to fetch. Did you run 'hasNextPage()' method?");
         }
 
-        // see API doc: https://developer.github.com/v3/issues/
-        nextPageUrl = apiUrl + "/repos/" + repository + "/issues?page=1"
-                + "&per_page=100" //default page is 30
-                + "&state=closed" //default state is open
-                + "&filter=all" //default filter is 'assigned'
-                + "&direction=desc"; //default is desc but setting it explicitly just in case
+        GitHubApi api = new GitHubApi(readOnlyAuthToken);
+        GitHubApi.Response response = api.get(nextPageUrl);
 
-        URL url = new URL(nextPageUrl);
-        LOG.info("GET " + nextPageUrl);
-        URLConnection urlConnection = url.openConnection();
-        // GitHub docs on authentication: https://developer.github.com/v3/auth/#authenticating-for-saml-sso
-        urlConnection.setRequestProperty("Authorization", "token " + readOnlyAuthToken);
-        LOG.info("Established connection to GitHub API");
+        nextPageUrl = getNextPageUrl(response.getLinkHeader());
 
-        String resetInLocalTime = resetLimitInLocalTimeOrEmpty(urlConnection);
-
-        String rateRemaining = urlConnection.getHeaderField("X-RateLimit-Remaining");
-        String rateLimit = urlConnection.getHeaderField("X-RateLimit-Limit");
-        LOG.info("GitHub API rate info => Remaining : " + rateRemaining + ", Limit : " + rateLimit + ", Reset at: " + resetInLocalTime);
-        nextPageUrl = getNextPageUrl(urlConnection.getHeaderField("Link"));
-
-        return parseJsonFrom(urlConnection);
+        return parseJsonFrom(response.getContent());
     }
 
-    private String resetLimitInLocalTimeOrEmpty(URLConnection urlConnection) {
-        String rateLimitReset = urlConnection.getHeaderField("X-RateLimit-Reset");
-        if (rateLimitReset == null) {
-            return "";
-        }
-        Date resetInEpochSeconds = DateUtil.parseDateInEpochSeconds(rateLimitReset);
-        return DateUtil.formatDateToLocalTime(resetInEpochSeconds, TimeZone.getDefault());
-    }
-
-    private JsonArray parseJsonFrom(URLConnection urlConnection) throws IOException {
-        InputStream response = urlConnection.getInputStream();
-
-        LOG.info("Reading remote stream from GitHub API");
-        String content = IOUtil.readFully(response);
-        LOG.info("GitHub API responded successfully.");
-
+    private JsonArray parseJsonFrom(String content) {
         JsonValue result = Json.parse(content);
-
         return result.asArray();
     }
-
 
     private String getNextPageUrl(String linkHeader) {
         if (linkHeader == null) {

@@ -141,10 +141,10 @@ public class GenerateChangelogTask extends DefaultTask {
             contributors.add(c.getAuthorName());
         }
 
-        LOG.lifecycle("Fetching ticket info from {}/{} based on {} ids", ghApiUrl, repository, tickets.size());
+        LOG.lifecycle("Fetching ticket info from {}/{} based on {} ids {}", ghApiUrl, repository, tickets.size(), tickets);
 
         GitHubTicketFetcher fetcher = new GitHubTicketFetcher();
-        Collection<Improvement> improvements = fetcher.fetchTickets(ghApiUrl, repository, readOnlyToken,
+        Collection<Ticket> improvements = fetcher.fetchTickets(ghApiUrl, repository, readOnlyToken,
                 tickets, asList(), false);
 
         LOG.lifecycle("Generating changelog based on {} tickets from GitHub", improvements.size());
