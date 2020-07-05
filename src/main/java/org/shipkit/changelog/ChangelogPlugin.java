@@ -7,6 +7,7 @@ import org.gradle.api.logging.Logging;
 import org.gradle.api.specs.Specs;
 
 import java.io.File;
+import java.util.Date;
 
 /**
  * The plugin, ideally with zero business logic, but only the Gradle integration code
@@ -18,6 +19,7 @@ public class ChangelogPlugin implements Plugin<Project> {
     public void apply(Project project) {
         project.getTasks().register("generateChangelog", GenerateChangelogTask.class, t -> {
             t.setRevision("HEAD");
+            t.setDate(DateUtil.formatDate(new Date()));
             t.setOutputFile(new File(project.getBuildDir(), "changelog.md"));
             t.setGhApiUrl("https://api.github.com");
             t.setGhUrl("https://github.com");

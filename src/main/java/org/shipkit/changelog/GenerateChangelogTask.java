@@ -28,6 +28,19 @@ public class GenerateChangelogTask extends DefaultTask {
     private String previousRevision;
     private String version;
     private String revision;
+    private String date;
+
+    /**
+     * The release date
+     */
+    @Input
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     @Input
     public String getGhUrl() {
@@ -136,7 +149,7 @@ public class GenerateChangelogTask extends DefaultTask {
 
         LOG.lifecycle("Generating changelog based on {} tickets from GitHub", improvements.size());
         String changelog = ChangelogFormat.formatChangelog(contributors, improvements, commits.size(), version,
-                revision, previousRevision, ghUrl + "/" + repository);
+                revision, previousRevision, ghUrl + "/" + repository, date);
 
         LOG.lifecycle("Saving changelog to file: {}", outputFile);
         IOUtil.writeFile(outputFile, changelog.trim());
