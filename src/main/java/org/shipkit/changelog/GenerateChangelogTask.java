@@ -4,6 +4,7 @@ import org.gradle.api.DefaultTask;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
 
@@ -103,7 +104,7 @@ public class GenerateChangelogTask extends DefaultTask {
         this.outputFile = outputFile;
     }
 
-    @Input
+    @InputDirectory
     public File getWorkingDir() {
         return workingDir;
     }

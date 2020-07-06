@@ -31,10 +31,6 @@ dependencies {
     testImplementation gradleTestKit()
 }
 
-test {
-    useJUnitPlatform()
-}
-
 publishing { // docs: https://docs.gradle.org/current/userguide/publishing_maven.html
     publications {
         // Run this for local testing: "./gradlew publishMavenPublicationToMavenLocal"
