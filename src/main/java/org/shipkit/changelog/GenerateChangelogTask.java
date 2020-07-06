@@ -141,9 +141,8 @@ public class GenerateChangelogTask extends DefaultTask {
 
         LOG.lifecycle("Fetching ticket info from {}/{} based on {} ids {}", ghApiUrl, repository, tickets.size(), tickets);
 
-        GitHubTicketFetcher fetcher = new GitHubTicketFetcher();
-        Collection<Ticket> improvements = fetcher.fetchTickets(ghApiUrl, repository, readOnlyToken,
-                tickets, false);
+        GitHubTicketFetcher fetcher = new GitHubTicketFetcher(ghApiUrl, repository, readOnlyToken);
+        Collection<Ticket> improvements = fetcher.fetchTickets(tickets, false);
 
         LOG.lifecycle("Generating changelog based on {} tickets from GitHub", improvements.size());
         String changelog = ChangelogFormat.formatChangelog(contributors, improvements, commits.size(), version,

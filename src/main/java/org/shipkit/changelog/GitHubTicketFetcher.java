@@ -9,9 +9,17 @@ import java.util.logging.Logger;
 class GitHubTicketFetcher {
 
     private static final Logger LOG = Logger.getLogger(GitHubTicketFetcher.class.getName());
+    private final GitHubListFetcher fetcher;
 
-    Collection<Ticket> fetchTickets(String apiUrl, String repository, String readOnlyAuthToken, Collection<String> ticketIds,
-                                    boolean onlyPullRequests) {
+    GitHubTicketFetcher(String apiUrl, String repository, String readOnlyToken) {
+        this(new GitHubListFetcher(apiUrl, repository, readOnlyToken));
+    }
+
+    GitHubTicketFetcher(GitHubListFetcher fetcher) {
+        this.fetcher = fetcher;
+    }
+
+    Collection<Ticket> fetchTickets(Collection<String> ticketIds, boolean onlyPullRequests) {
         List<Ticket> out = new LinkedList<>();
         if (ticketIds.isEmpty()) {
             return out;
@@ -21,8 +29,6 @@ class GitHubTicketFetcher {
         Queue<Long> tickets = queuedTicketNumbers(ticketIds);
 
         try {
-            GitHubListFetcher fetcher = new GitHubListFetcher(apiUrl, repository, readOnlyAuthToken);
-
             while (!tickets.isEmpty() && fetcher.hasNextPage()) {
                 JsonArray page = fetcher.nextPage();
 

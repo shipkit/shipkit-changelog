@@ -1,20 +1,30 @@
 package org.shipkit.changelog
 
+import com.eclipsesource.json.Json
 import spock.lang.Specification
 
 class GitHubTicketFetcherTest extends Specification {
 
-    def "fetches from GitHub"() {
-        def fetcher = new GitHubTicketFetcher()
+    def listFetcher = Mock(GitHubListFetcher)
+    def fetcher = new GitHubTicketFetcher(listFetcher)
+
+    def "empty tickets"() {
+        expect:
+        fetcher.fetchTickets([], true).empty
+    }
+
+    def "fetches from 2 pages"() {
+        listFetcher.hasNextPage() >>> [true, true, false]
+        def page1 = Json.parse("""[{"number": 30, "html_url": "http://issues/x", "title": "fix1"},
+                        {"number": 20, "html_url": "http://issues/x", "title": "fix2"}]""")
+        def page2 = Json.parse("""[{"number": 10, "html_url": "http://issues/x", "title": "fix3"}]""")
+        listFetcher.nextPage() >>> [page1, page2]
 
         when:
-        //TODO: we need to query a repo that is dedicated for this test and validate that pagination works
-        def tickets = fetcher.fetchTickets("https://api.github.com", "mockito/mockito", "a0a4c0f41c200f7c653323014d6a72a127764e17",
-                ["1928", "1922", "1927"], false)
+        def tickets = fetcher.fetchTickets(["10", "30", "40"], false)
 
         then:
-        tickets.join("\n") == """DefaultImprovement{id=1928, title='JUnit 5 strict stubs check should not suppress the regular test failure', url='https://github.com/mockito/mockito/pull/1928', labels=[], isPullRequest=true}
-DefaultImprovement{id=1927, title='Fix import order', url='https://github.com/mockito/mockito/pull/1927', labels=[], isPullRequest=true}
-DefaultImprovement{id=1922, title='[build] add ben-manes dependency upgrade finder', url='https://github.com/mockito/mockito/pull/1922', labels=[], isPullRequest=true}"""
+        tickets.join("\n") == """DefaultImprovement{id=30, title='fix1', url='http://issues/x', isPullRequest=false}
+DefaultImprovement{id=10, title='fix3', url='http://issues/x', isPullRequest=false}"""
     }
 }
