@@ -10,7 +10,7 @@ class GitHubTicketFetcher {
 
     private static final Logger LOG = Logger.getLogger(GitHubTicketFetcher.class.getName());
 
-    Collection<Ticket> fetchTickets(String apiUrl, String repository, String readOnlyAuthToken, Collection<String> ticketIds, Collection<String> labels,
+    Collection<Ticket> fetchTickets(String apiUrl, String repository, String readOnlyAuthToken, Collection<String> ticketIds,
                                     boolean onlyPullRequests) {
         List<Ticket> out = new LinkedList<>();
         if (ticketIds.isEmpty()) {

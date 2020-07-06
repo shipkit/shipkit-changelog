@@ -10,7 +10,7 @@ class GitHubTicketFetcherTest extends Specification {
         when:
         //TODO: we need to query a repo that is dedicated for this test and validate that pagination works
         def tickets = fetcher.fetchTickets("https://api.github.com", "mockito/mockito", "a0a4c0f41c200f7c653323014d6a72a127764e17",
-                ["1928", "1922", "1927"], [], false)
+                ["1928", "1922", "1927"], false)
 
         then:
         tickets.join("\n") == """DefaultImprovement{id=1928, title='JUnit 5 strict stubs check should not suppress the regular test failure', url='https://github.com/mockito/mockito/pull/1928', labels=[], isPullRequest=true}

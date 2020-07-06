@@ -10,8 +10,6 @@ import org.gradle.api.tasks.TaskAction;
 import java.io.File;
 import java.util.*;
 
-import static java.util.Arrays.asList;
-
 /**
  * Generates changelog based on the GitHub ticked ids found in commit messages.
  */
@@ -145,7 +143,7 @@ public class GenerateChangelogTask extends DefaultTask {
 
         GitHubTicketFetcher fetcher = new GitHubTicketFetcher();
         Collection<Ticket> improvements = fetcher.fetchTickets(ghApiUrl, repository, readOnlyToken,
-                tickets, asList(), false);
+                tickets, false);
 
         LOG.lifecycle("Generating changelog based on {} tickets from GitHub", improvements.size());
         String changelog = ChangelogFormat.formatChangelog(contributors, improvements, commits.size(), version,
