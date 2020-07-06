@@ -6,8 +6,8 @@ class ChangelogFormatTest extends Specification {
 
     def "creates changelog"() {
         def improvements = [
-                new Ticket(11, "fixed bug", "https://github.com/myorg/myrepo/pulls/11", [], true),
-                new Ticket(12, "improved feature", "https://github.com/myorg/myrepo/issues/12", [], false),
+                new Ticket(11, "fixed bug", "https://github.com/myorg/myrepo/pulls/11", true),
+                new Ticket(12, "improved feature", "https://github.com/myorg/myrepo/issues/12", false),
         ]
         when:
         def changelog = ChangelogFormat.formatChangelog(['mockitoguy', 'john'], improvements, 5,

@@ -1,7 +1,5 @@
 package org.shipkit.changelog;
 
-import java.util.Collection;
-
 /**
  * Simple POJO that contains all the information of an improvement
  */
@@ -10,14 +8,12 @@ public class Ticket {
     private final Long id;
     private final String title;
     private final String url;
-    private final Collection<String> labels;
     private final boolean isPullRequest;
 
-    public Ticket(Long id, String title, String url, Collection<String> labels, boolean isPullRequest) {
+    public Ticket(Long id, String title, String url, boolean isPullRequest) {
         this.id = id;
         this.title = title;
         this.url = url;
-        this.labels = labels;
         this.isPullRequest = isPullRequest;
     }
 
@@ -33,10 +29,6 @@ public class Ticket {
         return url;
     }
 
-    public Collection<String> getLabels() {
-        return labels;
-    }
-
     public boolean isPullRequest() {
         return isPullRequest;
     }
@@ -47,7 +39,6 @@ public class Ticket {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", url='" + url + '\'' +
-                ", labels=" + labels +
                 ", isPullRequest=" + isPullRequest +
                 '}';
     }
@@ -72,10 +63,7 @@ public class Ticket {
         if (title != null ? !title.equals(that.title) : that.title != null) {
             return false;
         }
-        if (url != null ? !url.equals(that.url) : that.url != null) {
-            return false;
-        }
-        return labels != null ? labels.equals(that.labels) : that.labels == null;
+        return url != null ? url.equals(that.url) : that.url == null;
     }
 
     @Override
@@ -83,7 +71,6 @@ public class Ticket {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (url != null ? url.hashCode() : 0);
-        result = 31 * result + (labels != null ? labels.hashCode() : 0);
         result = 31 * result + (isPullRequest ? 1 : 0);
         return result;
     }
