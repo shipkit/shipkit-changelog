@@ -10,11 +10,11 @@ class GitHubTicketFetcherIntegTest extends Specification {
 
         when:
         //TODO: we need to query a repo that is dedicated for this test and validate that pagination works
-        def tickets = fetcher.fetchTickets(["1928", "1922", "1927"], false)
+        def tickets = fetcher.fetchTickets(["1928", "1922", "1927"])
 
         then:
-        tickets.join("\n") == """DefaultImprovement{id=1928, title='JUnit 5 strict stubs check should not suppress the regular test failure', url='https://github.com/mockito/mockito/pull/1928', isPullRequest=true}
-DefaultImprovement{id=1927, title='Fix import order', url='https://github.com/mockito/mockito/pull/1927', isPullRequest=true}
-DefaultImprovement{id=1922, title='[build] add ben-manes dependency upgrade finder', url='https://github.com/mockito/mockito/pull/1922', isPullRequest=true}"""
+        tickets.join("\n") == """{id=1928, title='JUnit 5 strict stubs check should not suppress the regular test failure', url='https://github.com/mockito/mockito/pull/1928'}
+{id=1927, title='Fix import order', url='https://github.com/mockito/mockito/pull/1927'}
+{id=1922, title='[build] add ben-manes dependency upgrade finder', url='https://github.com/mockito/mockito/pull/1922'}"""
     }
 }

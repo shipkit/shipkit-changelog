@@ -1,45 +1,40 @@
 package org.shipkit.changelog;
 
+import java.util.Objects;
+
 /**
  * Simple POJO that contains all the information of an improvement
  */
-public class Ticket {
+class Ticket {
 
     private final Long id;
     private final String title;
     private final String url;
-    private final boolean isPullRequest;
 
-    public Ticket(Long id, String title, String url, boolean isPullRequest) {
+    Ticket(Long id, String title, String url) {
         this.id = id;
         this.title = title;
         this.url = url;
-        this.isPullRequest = isPullRequest;
     }
 
-    public Long getId() {
+    Long getId() {
         return id;
     }
 
-    public String getTitle() {
+    String getTitle() {
         return title;
     }
 
-    public String getUrl() {
+    String getUrl() {
         return url;
-    }
-
-    public boolean isPullRequest() {
-        return isPullRequest;
     }
 
     @Override
     public String toString() {
-        return "DefaultImprovement{" +
+        return "{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", url='" + url + '\'' +
-                ", isPullRequest=" + isPullRequest +
                 '}';
     }
 
@@ -54,16 +49,13 @@ public class Ticket {
 
         Ticket that = (Ticket) o;
 
-        if (isPullRequest != that.isPullRequest) {
+        if (!Objects.equals(id, that.id)) {
             return false;
         }
-        if (id != null ? !id.equals(that.id) : that.id != null) {
+        if (!Objects.equals(title, that.title)) {
             return false;
         }
-        if (title != null ? !title.equals(that.title) : that.title != null) {
-            return false;
-        }
-        return url != null ? url.equals(that.url) : that.url == null;
+        return Objects.equals(url, that.url);
     }
 
     @Override
@@ -71,7 +63,6 @@ public class Ticket {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (url != null ? url.hashCode() : 0);
-        result = 31 * result + (isPullRequest ? 1 : 0);
         return result;
     }
 }

@@ -133,17 +133,17 @@ public class GenerateChangelogTask extends DefaultTask {
         Collection<GitCommit> commits = new GitCommitProvider(logProvider).getCommits(previousRevision, revision);
 
         LOG.lifecycle("Collecting ticket ids from {} commits.", commits.size());
-        List<String> tickets = new LinkedList<>();
+        List<String> ticketIds = new LinkedList<>();
         Set<String> contributors = new TreeSet<>();
         for (GitCommit c : commits) {
-            tickets.addAll(c.getTickets());
+            ticketIds.addAll(c.getTickets());
             contributors.add(c.getAuthorName());
         }
 
-        LOG.lifecycle("Fetching ticket info from {}/{} based on {} ids {}", ghApiUrl, repository, tickets.size(), tickets);
+        LOG.lifecycle("Fetching ticket info from {}/{} based on {} ids {}", ghApiUrl, repository, ticketIds.size(), ticketIds);
 
         GitHubTicketFetcher fetcher = new GitHubTicketFetcher(ghApiUrl, repository, readOnlyToken);
-        Collection<Ticket> improvements = fetcher.fetchTickets(tickets, false);
+        Collection<Ticket> improvements = fetcher.fetchTickets(ticketIds);
 
         LOG.lifecycle("Generating changelog based on {} tickets from GitHub", improvements.size());
         String changelog = ChangelogFormat.formatChangelog(contributors, improvements, commits.size(), version,

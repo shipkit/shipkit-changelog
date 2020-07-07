@@ -10,7 +10,7 @@ class GitHubTicketFetcherTest extends Specification {
 
     def "empty tickets"() {
         expect:
-        fetcher.fetchTickets([], true).empty
+        fetcher.fetchTickets([]).empty
     }
 
     def "fetches from 2 pages"() {
@@ -21,10 +21,10 @@ class GitHubTicketFetcherTest extends Specification {
         listFetcher.nextPage() >>> [page1, page2]
 
         when:
-        def tickets = fetcher.fetchTickets(["10", "30", "40"], false)
+        def tickets = fetcher.fetchTickets(["10", "30", "40"])
 
         then:
-        tickets.join("\n") == """DefaultImprovement{id=30, title='fix1', url='http://issues/x', isPullRequest=false}
-DefaultImprovement{id=10, title='fix3', url='http://issues/x', isPullRequest=false}"""
+        tickets.join("\n") == """{id=30, title='fix1', url='http://issues/x'}
+{id=10, title='fix3', url='http://issues/x'}"""
     }
 }

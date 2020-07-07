@@ -16,6 +16,5 @@ class GitHubImprovementsJSONTest extends Specification {
         i.id == 100L
         i.title == "Some bugfix"
         i.url == "http://issues/100"
-        !i.pullRequest
     }
 }

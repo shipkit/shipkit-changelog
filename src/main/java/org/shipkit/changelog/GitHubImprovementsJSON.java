@@ -15,8 +15,7 @@ class GitHubImprovementsJSON {
         long id = issue.get("number").asLong();
         String issueUrl = issue.get("html_url").asString();
         String title = issue.get("title").asString();
-        boolean isPullRequest = issue.get("pull_request") != null;
 
-        return new Ticket(id, title, issueUrl, isPullRequest);
+        return new Ticket(id, title, issueUrl);
     }
 }
