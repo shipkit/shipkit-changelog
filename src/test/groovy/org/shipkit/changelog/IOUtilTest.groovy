@@ -19,17 +19,31 @@ class IOUtilTest extends Specification {
         readFully(new ByteArrayInputStream("".bytes)) == ""
     }
 
-    def "closes streams"() {
-        expect:
-        IOUtil.close(null)
-        IOUtil.close(new ByteArrayInputStream())
-    }
-
     def "writes file"() {
         def f = new File(tmp.root, "x/y/z.txt")
         writeFile(f, "ala\nma")
 
         expect:
         readFully(f) == "ala\nma"
+    }
+
+    def "clean exception when reading file"() {
+        when:
+        readFully((File) null)
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Problems reading from: null"
+        e.cause
+    }
+
+    def "clean exception when reading stream"() {
+        when:
+        readFully((InputStream) null)
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == "Problems reading from: null"
+        e.cause
     }
 }

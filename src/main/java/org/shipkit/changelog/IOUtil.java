@@ -13,36 +13,21 @@ public class IOUtil {
      * Reads string from the file
      */
     public static String readFully(File input) {
-        try {
-            return readNow(new FileInputStream(input));
+        try(InputStream i = new FileInputStream(input)) {
+            return readNow(i);
         } catch (Exception e) {
-            throw new RuntimeException("Problems reading file: " + input, e);
+            throw new RuntimeException("Problems reading from: " + input, e);
         }
     }
 
     /**
      * Reads string from the stream and closes it
      */
-    public static String readFully(InputStream stream) {
+    public static String readFully(InputStream input) {
         try {
-            return readNow(stream);
+            return readNow(input);
         } catch (Exception e) {
-            throw new RuntimeException("Problems reading stream", e);
-        }
-    }
-
-    /**
-     * Closes the target. Does nothing when target is null. Is not silent, throws exception on IOException.
-     *
-     * @param closeable the target, may be null
-     */
-    public static void close(Closeable closeable) {
-        if (closeable != null) {
-            try {
-                closeable.close();
-            } catch (IOException e) {
-                throw new RuntimeException("Problems closing closeable", e);
-            }
+            throw new RuntimeException("Problems reading from: " + input, e);
         }
     }
 
@@ -53,15 +38,11 @@ public class IOUtil {
     }
 
     public static void writeFile(File target, String content) {
-        PrintWriter p = null;
-        try {
-            target.getParentFile().mkdirs();
-            p = new PrintWriter(new OutputStreamWriter(new FileOutputStream(target), StandardCharsets.UTF_8));
+        target.getParentFile().mkdirs();
+        try(PrintWriter p = new PrintWriter(new OutputStreamWriter(new FileOutputStream(target), StandardCharsets.UTF_8))) {
             p.write(content);
         } catch (Exception e) {
             throw new RuntimeException("Problems writing text to file: " + target, e);
-        } finally {
-            close(p);
         }
     }
 }
