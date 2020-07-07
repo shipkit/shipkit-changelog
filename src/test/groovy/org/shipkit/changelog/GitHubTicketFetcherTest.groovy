@@ -27,4 +27,16 @@ class GitHubTicketFetcherTest extends Specification {
         tickets.join("\n") == """{id=30, title='fix1', url='http://issues/x'}
 {id=10, title='fix3', url='http://issues/x'}"""
     }
+
+    def "fetches empty page"() {
+        listFetcher.hasNextPage() >>> [true, false]
+        def page1 = Json.parse("[]")
+        listFetcher.nextPage() >> page1
+
+        when:
+        def tickets = fetcher.fetchTickets(["10", "30"])
+
+        then:
+        tickets.empty
+    }
 }
