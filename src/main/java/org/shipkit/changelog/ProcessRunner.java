@@ -1,7 +1,6 @@
 package org.shipkit.changelog;
 
 import java.io.File;
-import java.util.Arrays;
 
 import static org.shipkit.changelog.IOUtil.readFully;
 
@@ -21,7 +20,7 @@ class ProcessRunner {
             output = readFully(process.getInputStream());
             exitValue = process.waitFor();
         } catch (Exception e) {
-            throw new RuntimeException("Problems executing command:\n  " + Arrays.toString(commandLine), e);
+            throw new RuntimeException("Problems executing command:\n  " + String.join("\n", commandLine), e);
         }
 
         if (exitValue != 0) {

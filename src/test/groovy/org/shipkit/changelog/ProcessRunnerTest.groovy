@@ -24,6 +24,30 @@ class ProcessRunnerTest extends Specification {
         output.contains("hey joe.jar")
     }
 
+    def "fails to start process"() {
+        when:
+        new ProcessRunner(tmp.root).run("bad-cli")
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message == """Problems executing command:
+  bad-cli"""
+        e.cause
+    }
+
+    def "process failure"() {
+        when:
+        new ProcessRunner(tmp.root).run("ls", "-bad-option")
+
+        then:
+        def e = thrown(RuntimeException)
+        e.message.startsWith """Problems executing command (exit code: 1):
+  command: ls -bad-option
+  working dir: $tmp.root
+  output:
+ls: illegal option"""
+    }
+
     static boolean commandAvailable(String command) {
         try {
             return command.execute().waitFor() == 0
