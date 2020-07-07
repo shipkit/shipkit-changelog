@@ -24,8 +24,8 @@ class GitCommit {
     @Override
     public String toString() {
         return '{' +
-                "author='" + author + '\'' +
-                ", tickets=" + tickets +
+                "author='" + getAuthor() + '\'' +
+                ", tickets=" + getTickets() +
                 '}';
     }
 }

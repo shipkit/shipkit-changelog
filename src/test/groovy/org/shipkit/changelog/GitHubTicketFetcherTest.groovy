@@ -39,4 +39,15 @@ class GitHubTicketFetcherTest extends Specification {
         then:
         tickets.empty
     }
+
+    def "ticket out of range"() {
+        listFetcher.hasNextPage() >>> [true, false]
+        listFetcher.nextPage() >> Json.parse("""[{"number": 10, "html_url": "x", "title": "y"}]""")
+
+        when:
+        def tickets = fetcher.fetchTickets(["100"])
+
+        then:
+        tickets.empty
+    }
 }

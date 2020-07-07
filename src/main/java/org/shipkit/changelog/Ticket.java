@@ -1,7 +1,5 @@
 package org.shipkit.changelog;
 
-import java.util.Objects;
-
 /**
  * Simple POJO that contains all the information of an improvement
  */
@@ -36,33 +34,5 @@ class Ticket {
                 ", title='" + title + '\'' +
                 ", url='" + url + '\'' +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Ticket that = (Ticket) o;
-
-        if (!Objects.equals(id, that.id)) {
-            return false;
-        }
-        if (!Objects.equals(title, that.title)) {
-            return false;
-        }
-        return Objects.equals(url, that.url);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (url != null ? url.hashCode() : 0);
-        return result;
     }
 }
