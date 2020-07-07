@@ -2,7 +2,6 @@ package org.shipkit.changelog;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 class GitCommitProvider {
@@ -30,11 +29,9 @@ class GitCommitProvider {
         for (String entry : log.split(commitToken)) {
             String[] entryParts = entry.split(infoToken);
             if (entryParts.length == 4) {
-                String commitId = entryParts[0].trim();
-                String email = entryParts[1].trim();
                 String author = entryParts[2].trim();
                 String message = entryParts[3].trim();
-                commits.add(new GitCommit(commitId, email, author, message));
+                commits.add(new GitCommit(author, message));
             }
         }
         return commits;

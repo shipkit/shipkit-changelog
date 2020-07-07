@@ -137,7 +137,7 @@ public class GenerateChangelogTask extends DefaultTask {
         Set<String> contributors = new TreeSet<>();
         for (GitCommit c : commits) {
             ticketIds.addAll(c.getTickets());
-            contributors.add(c.getAuthorName());
+            contributors.add(c.getAuthor());
         }
 
         LOG.lifecycle("Fetching ticket info from {}/{} based on {} ids {}", ghApiUrl, repository, ticketIds.size(), ticketIds);

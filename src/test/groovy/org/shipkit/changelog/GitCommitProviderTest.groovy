@@ -10,9 +10,9 @@ class GitCommitProviderTest extends Specification {
             provider = new GitCommitProvider(logProvider)
 
     def log = """a5797f9e6cfc06e2fa70ed12ee6c9571af8a7fc9@@info@@mockitoguy@gmail.com@@info@@Szczepan Faber@@info@@Tidy-up in buildSrc
-next line
+Merged pull request #10
 @@commit@@
-b9d694f4c25880d9dda21ac216053f2bd0f5673c@@info@@mockitoguy@gmail.com@@info@@Szczepan Faber@@info@@Tidy-up in buildSrc - started using an interface where possible
+b9d694f4c25880d9dda21ac216053f2bd0f5673c@@info@@mockitoguy@gmail.com@@info@@Szczepan Faber@@info@@Tidy-up in buildSrc - fixes #20 and #30
 @@commit@@
 c76924d41c219f3b71b50a28d80c23c9c81b7a8c@@info@@john@doe@@info@@John R. Doe@@info@@dummy commit
 @@commit@@"""
@@ -24,10 +24,9 @@ c76924d41c219f3b71b50a28d80c23c9c81b7a8c@@info@@john@doe@@info@@John R. Doe@@inf
         def commits = provider.getCommits("v1.10.10", "HEAD")
 
         then:
-        commits.join("\n") == """GitCommit{commitId='a5797f9e6cfc06e2fa70ed12ee6c9571af8a7fc9', email='mockitoguy@gmail.com', author='Szczepan Faber', message='Tidy-up in buildSrc
-next line', tickets=[]}
-GitCommit{commitId='b9d694f4c25880d9dda21ac216053f2bd0f5673c', email='mockitoguy@gmail.com', author='Szczepan Faber', message='Tidy-up in buildSrc - started using an interface where possible', tickets=[]}
-GitCommit{commitId='c76924d41c219f3b71b50a28d80c23c9c81b7a8c', email='john@doe', author='John R. Doe', message='dummy commit', tickets=[]}"""
+        commits.join("\n") == """{author='Szczepan Faber', tickets=[10]}
+{author='Szczepan Faber', tickets=[20, 30]}
+{author='John R. Doe', tickets=[]}"""
     }
 
     def "has basic handling of garbage in log"() {
