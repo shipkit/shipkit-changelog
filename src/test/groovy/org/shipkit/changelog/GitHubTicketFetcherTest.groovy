@@ -1,6 +1,7 @@
 package org.shipkit.changelog
 
 import com.eclipsesource.json.Json
+import com.eclipsesource.json.JsonArray
 import spock.lang.Specification
 
 class GitHubTicketFetcherTest extends Specification {
@@ -30,8 +31,7 @@ class GitHubTicketFetcherTest extends Specification {
 
     def "fetches empty page"() {
         listFetcher.hasNextPage() >>> [true, false]
-        def page1 = Json.parse("[]")
-        listFetcher.nextPage() >> page1
+        listFetcher.nextPage() >> new JsonArray()
 
         when:
         def tickets = fetcher.fetchTickets(["10", "30"])

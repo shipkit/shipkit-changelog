@@ -1,14 +1,6 @@
 package org.shipkit.changelog;
 
-import java.io.BufferedInputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -26,21 +18,6 @@ public class IOUtil {
             return readNow(new FileInputStream(input));
         } catch (Exception e) {
             throw new RuntimeException("Problems reading file: " + input, e);
-        }
-    }
-
-    /**
-     * Reads string from the file or returns empty text if file doesn't exist or can't open
-     */
-    public static String readFullyOrDefault(File input, String defaultValue) {
-        try {
-            return readNow(new FileInputStream(input));
-        } catch (Exception e) {
-            //TODO this potentially swallows exceptions
-            //if the file does not exist, we should just use default value
-            //if the file cannot be read, we should write a message to the log that we cannot use the file
-            // + stack trace in debug level
-            return defaultValue;
         }
     }
 
