@@ -9,8 +9,8 @@ class GitLogProvider {
     }
 
     public String getLog(String fromRev, String toRev, String format) {
-        String fetch = fromRev == null ? toRev : "+refs/tags/" + fromRev + ":refs/tags/" + fromRev;
-        String log = fromRev == null ? toRev : fromRev + ".." + toRev;
+        String fetch = "+refs/tags/" + fromRev + ":refs/tags/" + fromRev;
+        String log = fromRev + ".." + toRev;
 
         runner.run("git", "fetch", "origin", fetch);
         return runner.run("git", "log", format, log);
