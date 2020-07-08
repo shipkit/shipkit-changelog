@@ -1,13 +1,18 @@
 package org.shipkit.changelog
 
 import org.gradle.testkit.runner.GradleRunner
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 /**
  * Only smoke test, forever! Don't add more tests here, instead cover the complexity in lower level unit tests.
+ *
+ * Once we have a couple of releases (tags) we should unignore this test
+ * and let it run against "this" repo.
  */
+@Ignore
 class ChangelogPluginIntegTest extends Specification {
 
     @Rule TemporaryFolder tmp = new TemporaryFolder()
