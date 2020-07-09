@@ -28,3 +28,32 @@ pluginBundle {
         }
     }
 }
+
+ext.'gradle.publish.key' = System.getenv('GRADLE_PUBLISH_KEY')
+ext.'gradle.publish.secret' = System.getenv('GRADLE_PUBLISH_SECRET')
+
+if (ext.'gradle.publish.key' && ext.'gradle.publish.secret') {
+    println "Gradle Plugin Portal environment variables: " +
+            "key=${ext.'gradle.publish.key'.substring(0, 3)}, secret=${ext.'gradle.publish.secret'.substring(0, 3)}"
+}
+
+def tagName = "v$version"
+
+task createTag {
+    description = "Creates a '$tagName' annotated tag"
+    doLast {
+        println "Creating tag $tagName"
+        exec { commandLine "git", "config", "user.email", "shipkit.org@gmail.com" }
+        exec { commandLine "git", "config", "user.name", "shipkit" }
+        exec { commandLine "git", "tag", "-a", "-m", "Release $tagName", tagName }
+        println "Created tag $tagName"
+    }
+}
+
+task pushTag(type: Exec) {
+    mustRunAfter createTag
+    description = "Pushes the tag. Hides secret key from git push output."
+    doFirst { println "Pushing tag $tagName" }
+    commandLine "./gradle/push-tag.sh", tagName
+    doLast { println "Pushed tag $tagName" }
+}
