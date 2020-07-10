@@ -12,8 +12,8 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2   # docs: https://github.com/actions/checkout
-#    - name: Fetch all tags
-#      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+    - name: Fetch all tags
+      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
     - name: Run build
       run: .\gradlew.bat build -i --scan --continue
 
@@ -25,9 +25,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2   # docs: https://github.com/actions/checkout
-#    - name: Fetch all tags
-#      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-      # when we build tags we may need to fetch the 'master' branch, too
+    - name: Fetch all tags
+      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
     - name: Run build
       run: ./gradlew build -i --scan --continue
 #    - name: Deploy to plugins.gradle.org
