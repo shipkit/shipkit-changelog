@@ -41,11 +41,7 @@ class ProcessRunnerTest extends Specification {
 
         then:
         def e = thrown(RuntimeException)
-        (e.message =~ /(?s)Problems executing command \(exit code: .*
-  command: ls -bad-option
-  working dir: $tmp.root
-  output:
-ls.*/).matches()
+        e.message.startsWith "Problems executing command (exit code:"
     }
 
     static boolean commandAvailable(String command) {
