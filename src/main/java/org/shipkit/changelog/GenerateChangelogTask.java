@@ -147,7 +147,7 @@ public class GenerateChangelogTask extends DefaultTask {
 
         LOG.lifecycle("Generating changelog based on {} tickets from GitHub", improvements.size());
         String changelog = ChangelogFormat.formatChangelog(contributors, improvements, commits.size(), version,
-                revision, previousRevision, ghUrl + "/" + repository, date);
+                previousRevision, ghUrl + "/" + repository, date);
 
         LOG.lifecycle("Saving changelog to file: {}", outputFile);
         IOUtil.writeFile(outputFile, changelog.trim());

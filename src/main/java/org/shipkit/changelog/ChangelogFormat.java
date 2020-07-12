@@ -16,7 +16,7 @@ public class ChangelogFormat {
      * Builds the changelog String based on the input parameters.
      */
     public static String formatChangelog(Collection<String> contributors, Collection<Ticket> tickets, int commitCount,
-                                         final String version, final String newRev, final String previousRev,
+                                         final String version, final String previousRev,
                                          final String gitHubRepoUrl, final String date) {
         String template = "@header@\n" +
                 "\n" +
@@ -31,7 +31,7 @@ public class ChangelogFormat {
             put("commitCount", "" + commitCount);
             put("repoUrl", gitHubRepoUrl);
             put("previousRev", previousRev);
-            put("newRev", newRev);
+            put("newRev", "v" + version);
             put("contributors", String.join(", ", contributors));
             put("improvements", formatImprovements(tickets));
         }};
