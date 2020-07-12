@@ -15,7 +15,7 @@ class GitHubReleasePluginIntegTest extends Specification {
     def setup() {
         file("settings.gradle")
         file("build.gradle") << """
-            plugins {  id('org.shipkit.gh.release') }
+            plugins {  id('org.shipkit.shipkit-gh-release') }
         """
     }
 

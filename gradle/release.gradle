@@ -2,11 +2,11 @@
 gradlePlugin {
     plugins {
         changelog {
-            id = 'org.shipkit.changelog'
+            id = 'org.shipkit.shipkit-changelog'
             implementationClass = 'org.shipkit.changelog.ChangelogPlugin'
         }
         gitHubRelease {
-            id = 'org.shipkit.gh.release'
+            id = 'org.shipkit.shipkit-gh-release'
             implementationClass = 'org.shipkit.gh.release.GitHubReleasePlugin'
         }
     }
