@@ -23,7 +23,7 @@ public class GitHubReleaseTask extends DefaultTask {
     private String repository = null;
     private String releaseName = null;
     private String releaseTag = null;
-    private File releaseNotes = null;
+    private File changelog = null;
     private String writeToken = null;
 
     @Input
@@ -63,12 +63,12 @@ public class GitHubReleaseTask extends DefaultTask {
     }
 
     @InputFile
-    public File getReleaseNotes() {
-        return releaseNotes;
+    public File getChangelog() {
+        return changelog;
     }
 
-    public void setReleaseNotes(File releaseNotes) {
-        this.releaseNotes = releaseNotes;
+    public void setChangelog(File changelog) {
+        this.changelog = changelog;
     }
 
     @Input
@@ -86,7 +86,7 @@ public class GitHubReleaseTask extends DefaultTask {
         JsonObject body = new JsonObject();
         body.add("tag_name", releaseTag);
         body.add("name", releaseName);
-        String releaseNotesTxt = IOUtil.readFully(releaseNotes);
+        String releaseNotesTxt = IOUtil.readFully(changelog);
         body.add("body", releaseNotesTxt);
 
         GitHubApi gitHubApi = new GitHubApi(writeToken);

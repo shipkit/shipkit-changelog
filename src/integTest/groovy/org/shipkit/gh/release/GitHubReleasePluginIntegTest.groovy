@@ -1,14 +1,14 @@
 package org.shipkit.gh.release
 
-import org.gradle.testkit.runner.GradleRunner
+
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
-import spock.lang.Specification
+import org.shipkit.BaseSpecification
 
 /**
  * Smoke test, we don't want an integration test that actually posts to GitHub
  */
-class GitHubReleasePluginIntegTest extends Specification {
+class GitHubReleasePluginIntegTest extends BaseSpecification {
 
     @Rule TemporaryFolder tmp = new TemporaryFolder()
 
@@ -25,7 +25,7 @@ class GitHubReleasePluginIntegTest extends Specification {
             file("changelog.md") << "Spanking new release!"            
             tasks.named("githubRelease") {
                 repository = "shipkit/shipkit-changelog"
-                releaseNotes = file("changelog.md")
+                changelog = file("changelog.md")
                 writeToken = "secret"
             }
         """
@@ -52,7 +52,7 @@ class GitHubReleasePluginIntegTest extends Specification {
                 repository = "shipkit/shipkit-changelog"
                 releaseName = "5.0"
                 releaseTag = "RELEASE-5.0"
-                releaseNotes = file("changelog.md")
+                changelog = file("changelog.md")
                 writeToken = "secret"
             } 
         """
@@ -68,28 +68,5 @@ class GitHubReleasePluginIntegTest extends Specification {
     - token: sec...
     - content:
   Spanking new release!"""
-    }
-
-    File file(String path) {
-        def f = new File(rootDir, path)
-        if (!f.exists()) {
-            f.parentFile.mkdirs()
-            f.createNewFile()
-            assert f.exists()
-        }
-        return f
-    }
-
-    File getRootDir() {
-        return tmp.root
-    }
-
-    GradleRunner runner(String... args) {
-        def runner = GradleRunner.create()
-        runner.forwardOutput()
-        runner.withPluginClasspath()
-        runner.withArguments(args)
-        runner.withProjectDir(rootDir)
-        runner
     }
 }
