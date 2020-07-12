@@ -36,7 +36,7 @@ class ChangelogPluginIntegTest extends BaseSpecification {
         runner("generateChangelog", "-m").build()
     }
 
-    def "full task configuration"() {
+    def "complete task configuration"() {
         file("build.gradle") << """
             plugins {  
                 id 'org.shipkit.shipkit-changelog'
