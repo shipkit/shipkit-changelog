@@ -15,7 +15,7 @@ jobs:
     - name: Fetch all tags
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
     - name: Run build
-      run: .\gradlew.bat build -i --scan --continue
+      run: .\gradlew.bat build --scan --continue
 
   build:
 
@@ -28,7 +28,7 @@ jobs:
     - name: Fetch all tags
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
     - name: Run build
-      run: ./gradlew build -i --scan --continue
+      run: ./gradlew build --scan --continue
 #    - name: Deploy to plugins.gradle.org
 #      if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
 #      run: ./gradlew createTag pushTag publishPlugins -i --scan
