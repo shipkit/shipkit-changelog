@@ -29,10 +29,10 @@ jobs:
       run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
     - name: Run build
       run: ./gradlew build --scan --continue
-#    - name: Deploy to plugins.gradle.org
-#      if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
-#      run: ./gradlew createTag pushTag publishPlugins -i --scan
-#      env:
-#          # Gradle env variables docs: https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_environment_variables
-#          GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
-#          GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
+    - name: Deploy to plugins.gradle.org
+      if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
+      run: ./gradlew createTag pushTag publishPlugins --scan
+      env:
+          # Gradle env variables docs: https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_environment_variables
+          GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
+          GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
