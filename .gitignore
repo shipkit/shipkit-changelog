@@ -1,7 +1,7 @@
 .gradle
 /build/
 
-# Idea files/dirs
+# Idea files / dirs
 .shelf
 out
 *.iml
