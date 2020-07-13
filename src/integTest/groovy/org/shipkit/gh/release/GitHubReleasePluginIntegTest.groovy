@@ -1,22 +1,67 @@
 package org.shipkit.gh.release
 
-import org.gradle.testkit.runner.GradleRunner
+
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
-import spock.lang.Specification
+import org.shipkit.BaseSpecification
 
 /**
  * Smoke test, we don't want an integration test that actually posts to GitHub
  */
-class GitHubReleasePluginIntegTest extends Specification {
+class GitHubReleasePluginIntegTest extends BaseSpecification {
 
     @Rule TemporaryFolder tmp = new TemporaryFolder()
 
     def setup() {
         file("settings.gradle")
+    }
+
+    def "basic task configuration"() {
         file("build.gradle") << """
-            plugins {  id('org.shipkit.shipkit-gh-release') }
+            plugins {
+                id 'org.shipkit.shipkit-gh-release'
+            }
+                        
+            tasks.named("githubRelease") {
+                repository = "shipkit/shipkit-changelog"
+                changelog = file("changelog.md")
+                writeToken = "secret"
+            }
         """
+
+        expect:
+        runner("githubRelease", "-m").build()
+    }
+
+    def "complete task configuration"() {
+        file("build.gradle") << """
+            plugins {
+                id 'org.shipkit.shipkit-gh-release'
+            }
+                        
+            tasks.named("githubRelease") {
+                //GitHub API url, configure if you use GitHub Enterprise, default as below
+                ghApiUrl = "https://api.github.com"
+                
+                //Repository where to create a release, *no default*
+                repository = "shipkit/shipkit-changelog"
+                
+                //The file with changelog (release notes), *no default*
+                changelog = file("changelog.md")
+                
+                //The name of the release name, default as below
+                releaseName = "v" + project.version
+                
+                //The release tag, default as below
+                releaseName = "v" + project.version
+                
+                //GitHub write token, *no default*
+                writeToken = "secret"
+            }
+        """
+
+        expect:
+        runner("githubRelease", "-m").build()
     }
 
     def "fails with clean exception"() {
@@ -25,7 +70,7 @@ class GitHubReleasePluginIntegTest extends Specification {
             file("changelog.md") << "Spanking new release!"            
             tasks.named("githubRelease") {
                 repository = "shipkit/shipkit-changelog"
-                releaseNotes = file("changelog.md")
+                changelog = file("changelog.md")
                 writeToken = "secret"
             }
         """
@@ -41,55 +86,5 @@ class GitHubReleasePluginIntegTest extends Specification {
     - token: sec...
     - content:
   Spanking new release!"""
-    }
-
-    def "task can be configured"() {
-        //demonstrates all configuration properties on the task:
-        file("build.gradle") << """
-            file("changelog.md") << "Spanking new release!"
-            tasks.named("githubRelease") {
-                ghApiUrl = "https://api.github.com"
-                repository = "shipkit/shipkit-changelog"
-                releaseName = "5.0"
-                releaseTag = "RELEASE-5.0"
-                releaseNotes = file("changelog.md")
-                writeToken = "secret"
-            } 
-        """
-
-        when:
-        def result = runner("githubRelease", "-s").buildAndFail()
-
-        then: //fails because we don't have the credentials
-        result.output.contains """Unable to post release to GitHub.
-    - url: https://api.github.com/repos/shipkit/shipkit-changelog/releases
-    - release tag: RELEASE-5.0
-    - release name: 5.0
-    - token: sec...
-    - content:
-  Spanking new release!"""
-    }
-
-    File file(String path) {
-        def f = new File(rootDir, path)
-        if (!f.exists()) {
-            f.parentFile.mkdirs()
-            f.createNewFile()
-            assert f.exists()
-        }
-        return f
-    }
-
-    File getRootDir() {
-        return tmp.root
-    }
-
-    GradleRunner runner(String... args) {
-        def runner = GradleRunner.create()
-        runner.forwardOutput()
-        runner.withPluginClasspath()
-        runner.withArguments(args)
-        runner.withProjectDir(rootDir)
-        runner
     }
 }
