@@ -66,6 +66,7 @@ class GitHubReleasePluginIntegTest extends BaseSpecification {
 
     def "fails with clean exception"() {
         file("build.gradle") << """
+            plugins { id 'org.shipkit.shipkit-gh-release' }
             version = "1.2.3"
             file("changelog.md") << "Spanking new release!"            
             tasks.named("githubRelease") {
