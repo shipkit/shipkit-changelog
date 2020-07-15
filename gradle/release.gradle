@@ -13,8 +13,8 @@ gradlePlugin {
 }
 
 pluginBundle {
-    website = 'https://github.com/shipkit/org.shipkit.shipkit-changelog'
-    vcsUrl = 'https://github.com/shipkit/org.shipkit.shipkit-changelog.git'
+    website = 'https://github.com/shipkit/shipkit-changelog'
+    vcsUrl = 'https://github.com/shipkit/shipkit-changelog.git'
     plugins {
         changelog {
             displayName = 'Shipkit changelog plugin'
