@@ -50,3 +50,23 @@ task createTag {
         println "Created tag $tagName"
     }
 }
+
+tasks.named("generateChangelog") {
+    previousRevision = "v" + project.ext.'shipkit-auto-version.previous-version'
+    readOnlyToken = "a0a4c0f41c200f7c653323014d6a72a127764e17"
+    repository = "shipkit/shipkit-changelog"
+}
+
+task testChangelog {
+    dependsOn tasks.named("generateChangelog")
+    doLast {
+        println " *** Changelog: ***\n" + file("$buildDir/changelog.md").text
+    }
+}
+
+tasks.named("githubRelease") {
+    dependsOn tasks.named("generateChangelog")
+    repository = "shipkit/shipkit-changelog"
+    changelog = tasks.named("generateChangelog").get().outputFile
+    writeToken = System.getenv("GH_WRITE_TOKEN")
+}

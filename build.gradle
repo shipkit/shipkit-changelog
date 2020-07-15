@@ -4,7 +4,8 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'org.shipkit:shipkit-auto-version:0.0.32'
+        classpath "org.shipkit:shipkit-auto-version:0.0.+"
+        classpath "org.shipkit:shipkit-changelog:0.0.+"
         classpath "com.gradle.publish:plugin-publish-plugin:0.12.0"
     }
 }
@@ -14,8 +15,11 @@ apply plugin: 'idea'
 apply plugin: 'maven-publish'
 apply plugin: 'java-gradle-plugin'
 
-apply plugin: 'org.shipkit.shipkit-auto-version'
 apply plugin: 'com.gradle.plugin-publish'
+
+apply plugin: 'org.shipkit.shipkit-auto-version'
+apply plugin: 'org.shipkit.shipkit-changelog'
+apply plugin: 'org.shipkit.shipkit-gh-release'
 
 group = "org.shipkit"
 
@@ -49,3 +53,4 @@ publishing { // docs: https://docs.gradle.org/current/userguide/publishing_maven
         }
     }
 }
+
