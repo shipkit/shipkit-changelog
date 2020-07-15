@@ -57,13 +57,6 @@ tasks.named("generateChangelog") {
     repository = "shipkit/shipkit-changelog"
 }
 
-task testChangelog {
-    dependsOn tasks.named("generateChangelog")
-    doLast {
-        println " *** Changelog: ***\n" + file("$buildDir/changelog.md").text
-    }
-}
-
 tasks.named("githubRelease") {
     dependsOn tasks.named("generateChangelog")
     repository = "shipkit/shipkit-changelog"

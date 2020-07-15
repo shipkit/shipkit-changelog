@@ -31,8 +31,9 @@ jobs:
       run: ./gradlew build --scan --continue
     - name: Perform release (tagging, changelog, deployment to plugins.gradle.org)
       if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
-      run: ./gradlew createTag publishPlugins testChangelog --scan
+      run: ./gradlew createTag publishPlugins githubRelease --scan
       env:
           # Gradle env variables docs: https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_environment_variables
           GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
           GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
+          GH_WRITE_TOKEN: ${{ secrets.GH_WRITE_TOKEN }}
