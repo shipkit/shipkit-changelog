@@ -1,23 +1,83 @@
+![CI](https://github.com/shipkit/shipkit-changelog/workflows/CI/badge.svg)
+
 # Shipkit Changelog Gradle plugin
 
-Minimalistic Gradle plugin that generates changelog based on commit history and GitHub pull requests/issues
+Minimalistic Gradle plugin that generates changelog based on commit history and GitHub pull requests/issues. 
+Optionally, the changelog content can be posted to GitHub Releases.
+This plugin is very small (<1kloc) and has a single dependency "com.eclipsesource.minimal-json:minimal-json:0.9.5".
+The dependency is very small (30kb), stable (no changes since 2017), and brings zero transitive dependencies.
+
+Example ([more examples](https://github.com/shipkit/shipkit-changelog/releases)):
+
+----
+#### 0.0.7
+ - 2020-07-15 - [1 commit(s)](https://github.com/shipkit/shipkit-changelog/compare/v0.0.6...v0.0.7) by Szczepan Faber
+ - Fixed broken links [(#12)](https://github.com/shipkit/shipkit-changelog/pull/12)
+----
+
+Basic usage:
+
+```
+plugins {  
+    id 'org.shipkit.shipkit-changelog'
+}
+
+tasks.named("generateChangelog") {
+    previousRevision = "v0.0.1"
+    readOnlyToken = "a0a4c0f41c200f7c653323014d6a72a127764e17"
+    repository = "shipkit/shipkit-changelog"
+}
+
+```
+
+## Other plugins/tools
+
+There are other Gradle plugins or tools that provide similar functionality:
+
+1. [github-changelog-generator](https://github.com/github-changelog-generator/github-changelog-generator)
+is a popular Ruby Gem (6K stars on GitHub) that generates changelog based on commits/pull requests
+but does not publish GitHub releases ([#56](https://github.com/github-changelog-generator/github-changelog-generator/issues/56)).
+Our plugin is a pure Gradle solution and it can publish a GitHub release.
+
+2. GitHub Action [Release Drafter](https://github.com/marketplace/actions/release-drafter)
+drafts the next release notes as pull requests are merged.
+This is a good option when the team wants to release on demand. 
+Our plugin is great for fully automated releases on every merged pull request.
+
+3. Gradle Plugin [git-changelog-gradle-plugin](https://github.com/tomasbjerre/git-changelog-gradle-plugin)
+seems like a nice plugin, maintained but not very popular (<50 stars on GitHub) and pulls in a lot of other dependencies
+([#21](https://github.com/tomasbjerre/git-changelog-gradle-plugin/issues/21)).
+Our plugin is simpler, smaller and brings only one dependency (that is very small, simple and has no transitive dependencies).
+
+4. Semantic Release [semantic-release](https://github.com/semantic-release/semantic-release)
+is a npm module for fully automated "semantic" releases, with changelog generation.  
+It has impressive 10K stars on GitHub.
+Our plugin is less opinionated, smaller, simpler and a pure Gradle solution.
+
+Pick the best tool that work for you and start automating releases and changelog generation!
 
 ## Design
      
-Tasks:
-    - changelog generation      
-        - collects ticket IDs from commit messages between revs (previous version and HEAD)
-        - call GitHub API to get PRs matching ticket IDs
-    - posting release to GitHub
+### Changelog generation
+
+1. Collect commits between 2 revisions
+2. Find ticket IDs based on '#' prefix in commit messages (e.g. looking for #1, #50, etc.)
+3. Use GitHub REST API to collect ticket information (issue or pull request) from GitHub
+4. Create markdown file using the PR/issue titles 
+
+### Posting GitHub releases
+
+Uses GitHub REST API to post releases. 
 
 ## Usage
 
 ### Realistic example
 
-Realistic example, uses 'shipkit-auto-version' plugin (source: gradle/release.gradle)
+Realistic example, uses [shipkit-auto-version](https://github.com/shipkit/shipkit-auto-version) plugin
+(source: [gradle/release.gradle](https://github.com/shipkit/shipkit-changelog/blob/master/gradle/release.gradle))
 
 ```
-    plugins {  
+    plugins {
         id 'org.shipkit.shipkit-changelog'
         id 'org.shipkit.shipkit-gh-release'
         id 'org.shipkit.shipkit-auto-version'
@@ -39,7 +99,8 @@ Realistic example, uses 'shipkit-auto-version' plugin (source: gradle/release.gr
 
 ### 'org.shipkit.shipkit-changelog' plugin
 
-Basic task configuration (source: ChangelogPluginIntegTest)
+Basic task configuration
+(source: [ChangelogPluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/changelog/ChangelogPluginIntegTest.groovy))
 
 ```
     plugins {  
@@ -53,7 +114,8 @@ Basic task configuration (source: ChangelogPluginIntegTest)
     }
 ```
 
-Complete task configuration (source: ChangelogPluginIntegTest)
+Complete task configuration
+(source: [ChangelogPluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/changelog/ChangelogPluginIntegTest.groovy))
 
 ```
     plugins {  
@@ -95,7 +157,8 @@ Complete task configuration (source: ChangelogPluginIntegTest)
 
 ### 'org.shipkit.shipkit-gh-release'
 
-Basic task configuration (source: GitHubReleasePluginIntegTest)
+Basic task configuration
+(source: [GitHubReleasePluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/gh/release/GitHubReleasePluginIntegTest.groovy))
 
 ```
     plugins {
@@ -109,7 +172,8 @@ Basic task configuration (source: GitHubReleasePluginIntegTest)
     }
 ```
 
-Complete task configuration (source: GitHubReleasePluginIntegTest)
+Complete task configuration
+(source: [GitHubReleasePluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/gh/release/GitHubReleasePluginIntegTest.groovy))
 
 ```
     plugins {
