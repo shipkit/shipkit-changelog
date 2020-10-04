@@ -37,20 +37,6 @@ if (ext.'gradle.publish.key' && ext.'gradle.publish.secret') {
             "key=${ext.'gradle.publish.key'.substring(0, 3)}, secret=${ext.'gradle.publish.secret'.substring(0, 3)}"
 }
 
-def tagName = "v$version"
-
-task createTag {
-    description = "Creates a '$tagName' annotated tag"
-    doLast {
-        println "Creating tag $tagName"
-        exec { commandLine "git", "config", "user.email", "shipkit.org@gmail.com" }
-        exec { commandLine "git", "config", "user.name", "shipkit" }
-        exec { commandLine "git", "tag", "-a", "-m", "Release $tagName", tagName }
-        exec { commandLine "git", "push", "origin", tagName }
-        println "Created tag $tagName"
-    }
-}
-
 tasks.named("generateChangelog") {
     previousRevision = "v" + project.ext.'shipkit-auto-version.previous-version'
     readOnlyToken = "a0a4c0f41c200f7c653323014d6a72a127764e17"
