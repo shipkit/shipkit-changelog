@@ -1,4 +1,4 @@
-![CI](https://github.com/shipkit/shipkit-changelog/workflows/CI/badge.svg)
+[![CI](https://github.com/shipkit/shipkit-changelog/workflows/CI/badge.svg)](https://github.com/shipkit/shipkit-changelog/actions)
 
 # Shipkit Changelog Gradle plugin
 
