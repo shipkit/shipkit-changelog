@@ -30,6 +30,12 @@ tasks.named("generateChangelog") {
 
 ```
 
+## Customers / sample projects
+
+- https://github.com/shipkit/shipkit-demo (great example/reference project)
+- https://github.com/shipkit/shipkit-changelog (this project)
+- https://github.com/shipkit/shipkit-auto-version
+
 ## Other plugins/tools
 
 There are other Gradle plugins or tools that provide similar functionality:
