@@ -15,7 +15,7 @@ Example ([more examples](https://github.com/shipkit/shipkit-changelog/releases))
  - Fixed broken links [(#12)](https://github.com/shipkit/shipkit-changelog/pull/12)
 ----
 
-Basic usage:
+## Basic usage
 
 ```
 plugins {  
@@ -29,6 +29,41 @@ tasks.named("generateChangelog") {
 }
 
 ```
+
+## Realistic example
+
+Realistic example, also uses a sibling plugin [shipkit-auto-version](https://github.com/shipkit/shipkit-auto-version) plugin
+(source: [gradle/release.gradle](https://github.com/shipkit/shipkit-changelog/blob/master/gradle/release.gradle))
+
+```
+    plugins {
+        id 'org.shipkit.shipkit-changelog'
+        id 'org.shipkit.shipkit-gh-release'
+        id 'org.shipkit.shipkit-auto-version'
+    }
+
+    tasks.named("generateChangelog") {
+        previousRevision = "v" + project.ext.'shipkit-auto-version.previous-version'
+        readOnlyToken = "a0a4c0f41c200f7c653323014d6a72a127764e17"
+        repository = "shipkit/shipkit-changelog"
+    }
+    
+    tasks.named("githubRelease") {
+        dependsOn tasks.named("generateChangelog")
+        repository = "shipkit/shipkit-changelog"
+        changelog = tasks.named("generateChangelog").get().outputFile                
+        writeToken = System.getenv("GH_WRITE_TOKEN")
+    }
+```
+
+## Configuration reference
+
+The standard way to enable automated tasks read/write to GitHub are [personal access tokens](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token#creating-a-token).
+When creating the tokens, please select the following token **scopes** ([more info on scopes](https://docs.github.com/en/free-pro-team@latest/developers/apps/scopes-for-oauth-apps)):
+
+- readOnlyToken - should have **no scope**, this way it only provides read-only access to **public** repositories
+(it **does not** provide read-only access to private repositories).
+- writeToken - needs 'repo/public_repo' scope to post releases via GH REST API.
 
 ## Customers / sample projects
 
@@ -76,32 +111,6 @@ Pick the best tool that work for you and start automating releases and changelog
 Uses GitHub REST API to post releases. 
 
 ## Usage
-
-### Realistic example
-
-Realistic example, uses [shipkit-auto-version](https://github.com/shipkit/shipkit-auto-version) plugin
-(source: [gradle/release.gradle](https://github.com/shipkit/shipkit-changelog/blob/master/gradle/release.gradle))
-
-```
-    plugins {
-        id 'org.shipkit.shipkit-changelog'
-        id 'org.shipkit.shipkit-gh-release'
-        id 'org.shipkit.shipkit-auto-version'
-    }
-
-    tasks.named("generateChangelog") {
-        previousRevision = "v" + project.ext.'shipkit-auto-version.previous-version'
-        readOnlyToken = "a0a4c0f41c200f7c653323014d6a72a127764e17"
-        repository = "shipkit/shipkit-changelog"
-    }
-    
-    tasks.named("githubRelease") {
-        dependsOn tasks.named("generateChangelog")
-        repository = "shipkit/shipkit-changelog"
-        changelog = tasks.named("generateChangelog").get().outputFile
-        writeToken = System.getenv("GH_WRITE_TOKEN")
-    }
-```
 
 ### 'org.shipkit.shipkit-changelog' plugin
 
