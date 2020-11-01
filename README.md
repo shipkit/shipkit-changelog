@@ -74,7 +74,7 @@ However, our changelog plugin needs commits in order to generate the release not
 When using GH actions, please configure your fetch depth to a sizeable amount of commits.
 For smaller projects, it's OK to fetch the entire history:
 
-```
+```yaml
 - uses: actions/checkout@v2   # docs: https://github.com/actions/checkout
   with:
     fetch-depth: '0' # '0' will fetch the entire history. For large projects you can put '1000' instead.
