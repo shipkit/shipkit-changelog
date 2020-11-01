@@ -58,12 +58,27 @@ Realistic example, also uses a sibling plugin [shipkit-auto-version](https://git
 
 ## Configuration reference
 
+### GitHub access tokens
+
 The standard way to enable automated tasks read/write to GitHub are [personal access tokens](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token#creating-a-token).
 When creating the tokens, please select the following token **scopes** ([more info on scopes](https://docs.github.com/en/free-pro-team@latest/developers/apps/scopes-for-oauth-apps)):
 
 - readOnlyToken - should have **no scope**, this way it only provides read-only access to **public** repositories
 (it **does not** provide read-only access to private repositories).
 - writeToken - needs 'repo/public_repo' scope to post releases via GH REST API.
+
+### Fetch depth on CI
+
+CI systems are often configured by default to perform Git fetch with minimum amount of commits.
+However, our changelog plugin needs commits in order to generate the release notes.
+When using GH actions, please configure your fetch depth to a sizeable amount of commits.
+For smaller projects, it's OK to fetch the entire history:
+
+```
+- uses: actions/checkout@v2   # docs: https://github.com/actions/checkout
+  with:
+    fetch-depth: '0' # '0' will fetch the entire history. For large projects you can put '1000' instead.
+```
 
 ## Customers / sample projects
 
