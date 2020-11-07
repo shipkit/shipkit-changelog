@@ -71,13 +71,14 @@ When creating the tokens, please select the following token **scopes** ([more in
 
 CI systems are often configured by default to perform Git fetch with minimum amount of commits.
 However, our changelog plugin needs commits in order to generate the release notes.
-When using GH actions, please configure your fetch depth to a sizeable amount of commits.
-For smaller projects, it's OK to fetch the entire history:
+When using GH actions, please configure your checkout action to fetch the entire history.
+Based on our tests in Mockito project, the checkout of the *entire* Mockito history (dating 2008)
+has negligible performance implication (adds ~2 secs to the checkout).
 
 ```yaml
 - uses: actions/checkout@v2   # docs: https://github.com/actions/checkout
   with:
-    fetch-depth: '0' # '0' will fetch the entire history. For large projects you can put '1000' instead.
+    fetch-depth: '0' # will fetch the entire history
 ```
 
 ## Customers / sample projects
