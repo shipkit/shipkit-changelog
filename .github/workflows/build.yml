@@ -25,8 +25,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2   # docs: https://github.com/actions/checkout
-    - name: Fetch all tags
-      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+      with:
+        fetch-depth: '0'
     - name: Run build
       run: ./gradlew build --scan --continue
     - name: Perform release (tagging, changelog, deployment to plugins.gradle.org)
