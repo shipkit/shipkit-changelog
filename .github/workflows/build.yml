@@ -1,3 +1,9 @@
+#
+# CI build that also make relases from the main dev branch.
+#
+# - skipping CI: add [skip ci] to the commit message
+# - skipping release: add [skip release] to the commit message
+#
 name: CI
 
 on:
@@ -9,6 +15,7 @@ on:
 
 jobs:
   windows_build:
+    if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2   # docs: https://github.com/actions/checkout
@@ -30,7 +37,10 @@ jobs:
     - name: Run build
       run: ./gradlew build --scan --continue
     - name: Perform release (tagging, changelog, deployment to plugins.gradle.org)
-      if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
+      if: success()
+          && github.event_name == 'push'
+          && github.ref == 'refs/heads/master'
+          && !contains(toJSON(github.event.commits.*.message), '[skip release]')
       run: ./gradlew publishPlugins githubRelease --scan
       env:
           # Gradle env variables docs: https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_environment_variables
