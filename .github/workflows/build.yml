@@ -1,3 +1,9 @@
+#
+# CI build that also make relases from the main dev branch.
+#
+# - skipping CI: add [skip ci] to the commit message
+# - skipping release: add [skip release] to the commit message
+#
 name: CI
 
 on:
