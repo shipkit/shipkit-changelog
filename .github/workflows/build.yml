@@ -37,8 +37,7 @@ jobs:
     - name: Run build
       run: ./gradlew build --scan --continue
     - name: Perform release (tagging, changelog, deployment to plugins.gradle.org)
-      if: success()
-          && github.event_name == 'push'
+      if: github.event_name == 'push'
           && github.ref == 'refs/heads/master'
           && !contains(toJSON(github.event.commits.*.message), '[skip release]')
       run: ./gradlew publishPlugins githubRelease --scan
