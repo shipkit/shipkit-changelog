@@ -39,6 +39,7 @@ jobs:
     - name: Perform release (tagging, changelog, deployment to plugins.gradle.org)
       if: github.event_name == 'push'
           && github.ref == 'refs/heads/master'
+          && github.repository == 'shipkit/shipkit-changelog'
           && !contains(toJSON(github.event.commits.*.message), '[skip release]')
       run: ./gradlew publishPlugins githubRelease --scan
       env:
