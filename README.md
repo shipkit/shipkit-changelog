@@ -86,6 +86,7 @@ has negligible performance implication (adds ~2 secs to the checkout).
 - https://github.com/shipkit/shipkit-demo (great example/reference project)
 - https://github.com/shipkit/shipkit-changelog (this project)
 - https://github.com/shipkit/shipkit-auto-version
+- https://github.com/mockito/mockito-scala
 
 ## Other plugins/tools
 
