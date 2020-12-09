@@ -42,7 +42,9 @@ public class GitHubApi {
         c.setRequestMethod(method);
         c.setDoOutput(true);
         c.setRequestProperty("Content-Type", "application/json");
-        c.setRequestProperty("Authorization", "token " + authToken);
+        if (authToken != null) {
+            c.setRequestProperty("Authorization", "token " + authToken);
+        }
 
         if (body.isPresent()) {
             try (OutputStream os = c.getOutputStream()) {
@@ -79,7 +81,7 @@ public class GitHubApi {
             return IOUtil.readFully(conn.getInputStream());
         } else {
             String errorMessage =
-                String.format("%s %s failed, response code = %s, response body:\n%s",
+                String.format("%s %s failed, response code = %s, response body:%n%s",
                     method, conn.getURL(), conn.getResponseCode(), IOUtil.readFully(conn.getErrorStream()));
             throw new IOException(errorMessage);
         }
