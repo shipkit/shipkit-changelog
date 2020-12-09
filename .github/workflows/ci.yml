@@ -46,4 +46,4 @@ jobs:
           # Gradle env variables docs: https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_environment_variables
           GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
           GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
-          GH_WRITE_TOKEN: ${{ secrets.GH_WRITE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
