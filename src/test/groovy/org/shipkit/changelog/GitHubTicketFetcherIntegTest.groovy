@@ -17,4 +17,16 @@ class GitHubTicketFetcherIntegTest extends Specification {
 {id=1927, title='Fix import order', url='https://github.com/mockito/mockito/pull/1927'}
 {id=1922, title='[build] add ben-manes dependency upgrade finder', url='https://github.com/mockito/mockito/pull/1922'}"""
     }
+
+    def "fetches from GitHub without token"() {
+        def fetcher = new GitHubTicketFetcher("https://api.github.com", "mockito/mockito", null)
+
+        when:
+        //TODO: we need to query a repo that is dedicated for this test and validate that pagination works
+        def tickets = fetcher.fetchTickets(["1927"])
+
+        then:
+        tickets.join("\n") == """{id=1927, title='Fix import order', url='https://github.com/mockito/mockito/pull/1927'}"""
+    }
+
 }

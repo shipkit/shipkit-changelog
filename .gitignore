@@ -2,6 +2,7 @@
 /build/
 
 # Idea files / dirs
+.idea
 .shelf
 out
 *.iml
