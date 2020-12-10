@@ -24,7 +24,7 @@ plugins {
 
 tasks.named("generateChangelog") {
     previousRevision = "v0.0.1"
-    readOnlyToken = "a0a4c0f41c200f7c653323014d6a72a127764e17"
+    readOnlyToken = "1234c0f41c200f7c653323014d6a72a127764e17"
     repository = "shipkit/shipkit-changelog"
 }
 
@@ -44,7 +44,7 @@ Realistic example, also uses a sibling plugin [shipkit-auto-version](https://git
 
     tasks.named("generateChangelog") {
         previousRevision = "v" + project.ext.'shipkit-auto-version.previous-version'
-        readOnlyToken = "a0a4c0f41c200f7c653323014d6a72a127764e17"
+        readOnlyToken = "1234c0f41c200f7c653323014d6a72a127764e17"
         repository = "shipkit/shipkit-changelog"
     }
     
@@ -69,7 +69,7 @@ for `readOnlyToken` and `writeToken`
 - readOnlyToken - should have **no scope**, this way it only provides read-only access to **public** repositories
 (it **does not** provide read-only access to private repositories).
   
-  You can leave this field empty for local development, in this case you are limited to 60  requests per hour.  
+  You can leave this field empty for local development, in this case you are limited to 60 requests per hour.  
 
 - writeToken - needs 'repo/public_repo' scope to post releases via GH REST API.
 
@@ -149,7 +149,7 @@ Basic task configuration
     
     tasks.named("generateChangelog") {
         previousRevision = "v3.3.10"
-        readOnlyToken = "a0a4c0f41c200f7c653323014d6a72a127764e17"
+        readOnlyToken = "1234c0f41c200f7c653323014d6a72a127764e17"
         repository = "mockito/mockito"
     }
 ```
@@ -187,8 +187,8 @@ Complete task configuration
         //The release version, default as below
         version = project.version       
         
-        //Token that enables querying GitHub, safe to check-in because it is read-only, default empty              
-        readOnlyToken = "a0a4c0f41c200f7c653323014d6a72a127764e17"
+        //Optional token (null by default) that enables querying GitHub with higher rate limit, safe to check-in because it is read-only
+        readOnlyToken = "1234c0f41c200f7c653323014d6a72a127764e17"
         
         //Repository to look for tickets, *no default*
         repository = "mockito/mockito"
