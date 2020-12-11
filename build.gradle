@@ -4,8 +4,8 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "org.shipkit:shipkit-auto-version:0.0.+"
-        classpath "org.shipkit:shipkit-changelog:0.0.+"
+        classpath "org.shipkit:shipkit-auto-version:+"
+        classpath "org.shipkit:shipkit-changelog:+"
         classpath "com.gradle.publish:plugin-publish-plugin:0.12.0"
     }
 }
