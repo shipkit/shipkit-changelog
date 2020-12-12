@@ -17,7 +17,7 @@ Example ([more examples](https://github.com/shipkit/shipkit-changelog/releases))
 
 ## Basic usage
 
-```
+```groovy
 plugins {  
     id 'org.shipkit.shipkit-changelog'
 }
@@ -35,7 +35,7 @@ tasks.named("generateChangelog") {
 Realistic example, also uses a sibling plugin [shipkit-auto-version](https://github.com/shipkit/shipkit-auto-version) plugin
 (source: [gradle/release.gradle](https://github.com/shipkit/shipkit-changelog/blob/master/gradle/release.gradle))
 
-```
+```groovy
     plugins {
         id 'org.shipkit.shipkit-changelog'
         id 'org.shipkit.shipkit-gh-release'
@@ -43,7 +43,7 @@ Realistic example, also uses a sibling plugin [shipkit-auto-version](https://git
     }
 
     tasks.named("generateChangelog") {
-        previousRevision = "v" + project.ext.'shipkit-auto-version.previous-version'
+        previousRevision = project.ext.'shipkit-auto-version.previous-tag'
         readOnlyToken = "1234c0f41c200f7c653323014d6a72a127764e17"
         repository = "shipkit/shipkit-changelog"
     }
@@ -142,7 +142,7 @@ Uses GitHub REST API to post releases.
 Basic task configuration
 (source: [ChangelogPluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/changelog/ChangelogPluginIntegTest.groovy))
 
-```
+```groovy
     plugins {  
         id 'org.shipkit.shipkit-changelog'
     }
@@ -157,7 +157,7 @@ Basic task configuration
 Complete task configuration
 (source: [ChangelogPluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/changelog/ChangelogPluginIntegTest.groovy))
 
-```
+```groovy
     plugins {  
         id 'org.shipkit.shipkit-changelog'
     }
@@ -200,7 +200,7 @@ Complete task configuration
 Basic task configuration
 (source: [GitHubReleasePluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/gh/release/GitHubReleasePluginIntegTest.groovy))
 
-```
+```groovy
     plugins {
         id 'org.shipkit.shipkit-gh-release'
     }
@@ -215,7 +215,7 @@ Basic task configuration
 Complete task configuration
 (source: [GitHubReleasePluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/gh/release/GitHubReleasePluginIntegTest.groovy))
 
-```
+```groovy
     plugins {
         id 'org.shipkit.shipkit-gh-release'
     }
