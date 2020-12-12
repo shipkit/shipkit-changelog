@@ -38,7 +38,7 @@ if (ext.'gradle.publish.key' && ext.'gradle.publish.secret') {
 }
 
 tasks.named("generateChangelog") {
-    previousRevision = "v" + project.ext.'shipkit-auto-version.previous-version'
+    previousRevision = project.ext.'shipkit-auto-version.previous-tag'
     readOnlyToken = System.getenv("GITHUB_TOKEN")
     repository = "shipkit/shipkit-changelog"
 }
