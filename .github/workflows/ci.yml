@@ -41,7 +41,7 @@ jobs:
           && github.ref == 'refs/heads/master'
           && github.repository == 'shipkit/shipkit-changelog'
           && !contains(toJSON(github.event.commits.*.message), '[skip release]')
-      run: ./gradlew publishPlugins githubRelease --scan
+      run: ./gradlew githubRelease publishPlugins --scan
       env:
           # Gradle env variables docs: https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_environment_variables
           GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
