@@ -1,8 +1,20 @@
 [![CI](https://github.com/shipkit/shipkit-changelog/workflows/CI/badge.svg)](https://github.com/shipkit/shipkit-changelog/actions)
+[![Gradle Portal](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/org/shipkit/shipkit-changelog/maven-metadata.xml.svg?label=Gradle%20Plugins)](https://plugins.gradle.org/plugin/org.shipkit.shipkit-changelog)
+
+# Shipkit
+
+## Vision
+
+Software developers spend all their creative energy on productive work.
+There is absolutely **zero** release overhead because all software is released *automatically*.
+
+## Mission
+
+Encourage and help software developers set up their releases to be fully automated.
 
 # Shipkit Changelog Gradle plugin
 
-Minimalistic Gradle plugin that generates changelog based on commit history and GitHub pull requests/issues. 
+Our plugin generates changelog based on commit history and GitHub pull requests/issues. 
 Optionally, the changelog content can be posted to GitHub Releases.
 This plugin is very small (<1kloc) and has a single dependency "com.eclipsesource.minimal-json:minimal-json:0.9.5".
 The dependency is very small (30kb), stable (no changes since 2017), and brings zero transitive dependencies.
@@ -14,6 +26,9 @@ Example ([more examples](https://github.com/shipkit/shipkit-changelog/releases))
  - 2020-07-15 - [1 commit(s)](https://github.com/shipkit/shipkit-changelog/compare/v0.0.6...v0.0.7) by Szczepan Faber
  - Fixed broken links [(#12)](https://github.com/shipkit/shipkit-changelog/pull/12)
 ----
+
+Also check out [shipkit-auto-version](https://github.com/shipkit/shipkit-auto-version) plugin that automatically picks the next version for the release.
+```shipkit-auto-version``` and ```shipkit-changelog``` plugins work together perfectly.
 
 ## Basic usage
 
