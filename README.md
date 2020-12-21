@@ -255,3 +255,27 @@ Complete task configuration
         writeToken = "secret"
     }
 ``` 
+
+# Contributing
+
+This project loves contributions!
+
+## Testing
+
+In order to test the plugin behavior locally, you need to first *install* the plugin locally,
+and then use the *locally released* version in a selected *test project*.
+Example workflow:
+
+1. Clone this repo, load the project into the IntelliJ IDEA, and make the code changes.
+2. Run ```./gradlew publishToMavenLocal``` task to publish the new version locally.
+This version contains *your* changes implemented in the *previous* step.
+Observe the build output and note down the *version* that was published.
+We are using *maven local* because that's the easiest way to publish and consume a new version locally.
+3. Select a test project where you want to observe/test changes implemented in the previous step.
+For example, you can use *your fork* of this repo as the test project.
+4. Ensure that the test project is correctly *configured* in the Gradle build file.
+It needs to declare ```mavenLocal()``` as a *first* repository in ```buildscript.repositories```
+([code link](https://github.com/shipkit/shipkit-changelog/blob/master/build.gradle#L3), might be stale).
+Also, it needs to use the **correct** version of the plugin (the version that was published in the *earlier* step).
+Here's where the version is declared in the build file: [code link](https://github.com/shipkit/shipkit-changelog/blob/master/build.gradle#L8)
+(might be stale).
