@@ -72,6 +72,7 @@ class GitHubReleasePluginIntegTest extends BaseSpecification {
             tasks.named("githubRelease") {
                 repository = "shipkit/shipkit-changelog"
                 changelog = file("changelog.md")
+                newTagRevision = "ff2fb22b3bb2fb08164c126c0e2055d57dee441b"
                 writeToken = "secret"
             }
         """

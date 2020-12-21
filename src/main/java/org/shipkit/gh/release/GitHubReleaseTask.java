@@ -25,6 +25,7 @@ public class GitHubReleaseTask extends DefaultTask {
     private String releaseTag = null;
     private File changelog = null;
     private String writeToken = null;
+    private String newTagRevision = null;
 
     @Input
     public String getGhApiUrl() {
@@ -80,12 +81,30 @@ public class GitHubReleaseTask extends DefaultTask {
         this.writeToken = writeToken;
     }
 
+    /**
+     * See {@link #setNewTagRevision(String)}
+     */
+    @Input
+    public String getNewTagRevision() {
+        return newTagRevision;
+    }
+
+    /**
+     * Property required to specify revision for the new tag.
+     * The property's value is passed to GitHub API's
+     * 'target_commitish' parameter in {@link #postRelease()} method.
+     */
+    public void setNewTagRevision(String newTagRevision) {
+        this.newTagRevision = newTagRevision;
+    }
+
     @TaskAction public void postRelease() {
         String url = ghApiUrl + "/repos/" + repository + "/releases";
 
         JsonObject body = new JsonObject();
         body.add("tag_name", releaseTag);
         body.add("name", releaseName);
+        body.add("target_commitish", newTagRevision);
         String releaseNotesTxt = IOUtil.readFully(changelog);
         body.add("body", releaseNotesTxt);
 
