@@ -81,11 +81,19 @@ public class GitHubReleaseTask extends DefaultTask {
         this.writeToken = writeToken;
     }
 
+    /**
+     * See {@link #setNewTagRevision(String)}
+     */
     @Input
     public String getNewTagRevision() {
         return newTagRevision;
     }
 
+    /**
+     * Property required to specify revision for the new tag.
+     * The property's value is passed to GitHub API's
+     * 'target_commitish' parameter in {@link #postRelease()} method.
+     */
     public void setNewTagRevision(String newTagRevision) {
         this.newTagRevision = newTagRevision;
     }
