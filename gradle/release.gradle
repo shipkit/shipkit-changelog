@@ -47,5 +47,6 @@ tasks.named("githubRelease") {
     dependsOn tasks.named("generateChangelog")
     repository = "shipkit/shipkit-changelog"
     changelog = tasks.named("generateChangelog").get().outputFile
+    newTagRevision = System.getenv("GITHUB_SHA")
     writeToken = System.getenv("GITHUB_TOKEN")
 }
