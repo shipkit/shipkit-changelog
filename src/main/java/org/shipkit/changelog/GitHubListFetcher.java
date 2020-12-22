@@ -12,11 +12,11 @@ import java.io.IOException;
 class GitHubListFetcher {
 
     private static final String NO_MORE_PAGES = "none";
-    private final String readOnlyAuthToken;
+    private final String githubToken;
     private String nextPageUrl;
 
-    GitHubListFetcher(String apiUrl, String repository, String readOnlyAuthToken) {
-        this.readOnlyAuthToken = readOnlyAuthToken;
+    GitHubListFetcher(String apiUrl, String repository, String githubToken) {
+        this.githubToken = githubToken;
 
         // see API doc: https://developer.github.com/v3/issues/
         nextPageUrl = apiUrl + "/repos/" + repository + "/issues?page=1"
@@ -42,7 +42,7 @@ class GitHubListFetcher {
             throw new IllegalStateException("GitHub API has no more issues to fetch. Did you run 'hasNextPage()' method?");
         }
 
-        GitHubApi api = new GitHubApi(readOnlyAuthToken);
+        GitHubApi api = new GitHubApi(githubToken);
         GitHubApi.Response response = api.get(nextPageUrl);
 
         nextPageUrl = getNextPageUrl(response.getLinkHeader());

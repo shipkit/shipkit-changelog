@@ -24,7 +24,7 @@ public class GitHubReleaseTask extends DefaultTask {
     private String releaseName = null;
     private String releaseTag = null;
     private File changelog = null;
-    private String writeToken = null;
+    private String githubToken = null;
     private String newTagRevision = null;
 
     @Input
@@ -72,13 +72,39 @@ public class GitHubReleaseTask extends DefaultTask {
         this.changelog = changelog;
     }
 
+    /**
+     * Deprecated, please use {@link #getGithubToken()}
+     */
     @Input
+    @Deprecated
     public String getWriteToken() {
-        return writeToken;
+        return getGithubToken();
     }
 
+    /**
+     * Deprecated, please use {@link #setGithubToken(String)}
+     */
+    @Deprecated
     public void setWriteToken(String writeToken) {
-        this.writeToken = writeToken;
+        this.setGithubToken(writeToken);
+    }
+
+    /**
+     * See {@link #setGithubToken(String)}
+     */
+    @Input
+    public String getGithubToken() {
+        return githubToken;
+    }
+
+    /**
+     * Token required by GH API to post a new release.
+     * This token should have *write* permission to the repo.
+     *
+     * @param githubToken token with write permissions
+     */
+    public void setGithubToken(String githubToken) {
+        this.githubToken = githubToken;
     }
 
     /**
@@ -108,7 +134,7 @@ public class GitHubReleaseTask extends DefaultTask {
         String releaseNotesTxt = IOUtil.readFully(changelog);
         body.add("body", releaseNotesTxt);
 
-        GitHubApi gitHubApi = new GitHubApi(writeToken);
+        GitHubApi gitHubApi = new GitHubApi(githubToken);
         try {
             String response = gitHubApi.post(url, body.toString());
             String htmlUrl = Json.parse(response).asObject().getString("html_url", "");
@@ -118,7 +144,7 @@ public class GitHubReleaseTask extends DefaultTask {
                     "  - url: " + url + "\n" +
                     "  - release tag: " + releaseTag + "\n" +
                     "  - release name: " + releaseName + "\n" +
-                    "  - token: " + writeToken.substring(0, 3) + "...\n" +
+                    "  - token: " + githubToken.substring(0, 3) + "...\n" +
                     "  - content:\n" + releaseNotesTxt + "\n"
                     , e);
         }

@@ -11,8 +11,8 @@ class GitHubTicketFetcher {
     private static final Logger LOG = Logger.getLogger(GitHubTicketFetcher.class.getName());
     private final GitHubListFetcher fetcher;
 
-    GitHubTicketFetcher(String apiUrl, String repository, String readOnlyToken) {
-        this(new GitHubListFetcher(apiUrl, repository, readOnlyToken));
+    GitHubTicketFetcher(String apiUrl, String repository, String githubToken) {
+        this(new GitHubListFetcher(apiUrl, repository, githubToken));
     }
 
     GitHubTicketFetcher(GitHubListFetcher fetcher) {
