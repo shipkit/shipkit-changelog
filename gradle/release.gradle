@@ -47,7 +47,6 @@ tasks.named("githubRelease") {
     dependsOn tasks.named("generateChangelog")
     repository = "shipkit/shipkit-changelog"
     changelog = tasks.named("generateChangelog").get().outputFile
-//    After publishing new version of the plugin remove comment on 'newTagRevision' below:
-//    newTagRevision = System.getenv("GITHUB_SHA")
+    newTagRevision = System.getenv("GITHUB_SHA")
     writeToken = System.getenv("GITHUB_TOKEN")
 }
