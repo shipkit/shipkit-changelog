@@ -22,7 +22,7 @@ public class GenerateChangelogTask extends DefaultTask {
     private String ghUrl;
     private File outputFile;
     private File workingDir;
-    private String readOnlyToken;
+    private String githubToken;
     private String ghApiUrl;
     private String repository;
     private String previousRevision;
@@ -115,16 +115,38 @@ public class GenerateChangelogTask extends DefaultTask {
     }
 
     /**
-     * Read-only GitHub token used to pull GitHub issues
+     * Deprecated, please use {@link #getGithubToken()}
      */
     @Input
     @Optional
+    @Deprecated
     public String getReadOnlyToken() {
-        return readOnlyToken;
+        return getGithubToken();
     }
 
+    /**
+     * Deprecated, please use {@link #setGithubToken(String)}
+     */
+    @Deprecated
     public void setReadOnlyToken(String readOnlyToken) {
-        this.readOnlyToken = readOnlyToken;
+        this.setGithubToken(readOnlyToken);
+    }
+
+    /**
+     * See {@link #setGithubToken(String)}
+     */
+    @Input
+    public String getGithubToken() {
+        return githubToken;
+    }
+
+    /**
+     * GitHub token used to pull GitHub issues.
+     * The same token is used to post a new release:
+     * {@link org.shipkit.gh.release.GitHubReleaseTask#setGithubToken(String)}
+     */
+    public void setGithubToken(String githubToken) {
+        this.githubToken = githubToken;
     }
 
     @TaskAction public void generateChangelog() {
@@ -144,7 +166,7 @@ public class GenerateChangelogTask extends DefaultTask {
 
         LOG.lifecycle("Fetching ticket info from {}/{} based on {} ids {}", ghApiUrl, repository, ticketIds.size(), ticketIds);
 
-        GitHubTicketFetcher fetcher = new GitHubTicketFetcher(ghApiUrl, repository, readOnlyToken);
+        GitHubTicketFetcher fetcher = new GitHubTicketFetcher(ghApiUrl, repository, githubToken);
         Collection<Ticket> improvements = fetcher.fetchTickets(ticketIds);
 
         LOG.lifecycle("Generating changelog based on {} tickets from GitHub", improvements.size());
