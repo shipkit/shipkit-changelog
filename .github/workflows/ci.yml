@@ -22,7 +22,7 @@ jobs:
       with:
         fetch-depth: '0'
     - name: Run build
-      run: .\gradlew.bat build --scan --continue
+      run: .\gradlew.bat build --continue
 
   build:
 
@@ -35,13 +35,13 @@ jobs:
       with:
         fetch-depth: '0'
     - name: Run build
-      run: ./gradlew build --scan --continue
+      run: ./gradlew build --continue
     - name: Perform release (tagging, changelog, deployment to plugins.gradle.org)
       if: github.event_name == 'push'
           && github.ref == 'refs/heads/master'
           && github.repository == 'shipkit/shipkit-changelog'
           && !contains(toJSON(github.event.commits.*.message), '[skip release]')
-      run: ./gradlew githubRelease publishPlugins --scan
+      run: ./gradlew githubRelease publishPlugins
       env:
           # Gradle env variables docs: https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_environment_variables
           GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
