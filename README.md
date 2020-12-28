@@ -39,7 +39,7 @@ plugins {
 
 tasks.named("generateChangelog") {
     previousRevision = "v0.0.1"
-    readOnlyToken = "1234c0f41c200f7c653323014d6a72a127764e17"
+    githubToken = System.getenv("GITHUB_TOKEN")
     repository = "shipkit/shipkit-changelog"
 }
 
@@ -59,15 +59,15 @@ Realistic example, also uses a sibling plugin [shipkit-auto-version](https://git
 
     tasks.named("generateChangelog") {
         previousRevision = project.ext.'shipkit-auto-version.previous-tag'
-        readOnlyToken = "1234c0f41c200f7c653323014d6a72a127764e17"
+        githubToken = System.getenv("GITHUB_TOKEN")
         repository = "shipkit/shipkit-changelog"
     }
     
     tasks.named("githubRelease") {
         dependsOn tasks.named("generateChangelog")
         repository = "shipkit/shipkit-changelog"
-        changelog = tasks.named("generateChangelog").get().outputFile                
-        writeToken = System.getenv("GH_WRITE_TOKEN")
+        changelog = tasks.named("generateChangelog").get().outputFile
+        githubToken = System.getenv("GITHUB_TOKEN")
     }
 ```
 
@@ -76,17 +76,15 @@ Realistic example, also uses a sibling plugin [shipkit-auto-version](https://git
 ### GitHub access tokens
 
 The standard way to enable automated tasks read/write to GitHub are [personal access tokens](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token#creating-a-token).
-When creating the tokens, please select the following token **scopes** ([more info on scopes](https://docs.github.com/en/free-pro-team@latest/developers/apps/scopes-for-oauth-apps)):
+Shipkit Changelog plugin uses one authentication token to fetch tickets and post releases via GH REST API. 
+The token is set in task configuration in *.gradle file with `githubToken` property. This property replaced deprecated 
+`readOnlyToken` and `writeToken` properties. When creating token, 'repo/public_repo' scope needs to be selected
+([more info on scopes](https://docs.github.com/en/free-pro-team@latest/developers/apps/scopes-for-oauth-apps)).
 
-When using GH actions you can use [GITHUB_TOKEN](https://docs.github.com/en/free-pro-team@latest/actions/reference/authentication-in-a-workflow) 
-for `readOnlyToken` and `writeToken`
-
-- readOnlyToken - should have **no scope**, this way it only provides read-only access to **public** repositories
-(it **does not** provide read-only access to private repositories).
-  
-  You can leave this field empty for local development, in this case you are limited to 60 requests per hour.  
-
-- writeToken - needs 'repo/public_repo' scope to post releases via GH REST API.
+When using GH Actions [GITHUB_TOKEN](https://docs.github.com/en/free-pro-team@latest/actions/reference/authentication-in-a-workflow) secret
+is automatically created, and ready to use to authenticate in a workflow run.
+In Shipkit Changelog plugin configuration `githubToken` property should be supplied with token by environmental variable
+that is configured in CI System (as the token grants access to write to repository it ***should not*** be exposed).
 
 ### Fetch depth on CI
 
@@ -100,6 +98,18 @@ has negligible performance implication (adds ~2 secs to the checkout).
 - uses: actions/checkout@v2   # docs: https://github.com/actions/checkout
   with:
     fetch-depth: '0' # will fetch the entire history
+```
+
+### Target revision
+
+For proper release tagging `newTagRevision` is needed to be set. This property is set with SHA of the commit from which 
+release is created. Desired way to do this is to supply the property with `GITHUB_SHA` env variable (one of GitHub's default 
+env variables), which delivers SHA of the commit that triggered the workflow:
+```groovy
+tasks.named("githubRelease") {
+    //...
+    newTagRevision = System.getenv("GITHUB_SHA")
+}
 ```
 
 ## Customers / sample projects
@@ -164,7 +174,7 @@ Basic task configuration
     
     tasks.named("generateChangelog") {
         previousRevision = "v3.3.10"
-        readOnlyToken = "1234c0f41c200f7c653323014d6a72a127764e17"
+        githubToken = "secret"
         repository = "mockito/mockito"
     }
 ```
@@ -202,8 +212,8 @@ Complete task configuration
         //The release version, default as below
         version = project.version       
         
-        //Optional token (null by default) that enables querying GitHub with higher rate limit, safe to check-in because it is read-only
-        readOnlyToken = "1234c0f41c200f7c653323014d6a72a127764e17"
+        //Token used for fetching tickets; same token is used for posting - should remain unexposed, *no default*
+        githubToken = "secret"
         
         //Repository to look for tickets, *no default*
         repository = "mockito/mockito"
@@ -223,7 +233,8 @@ Basic task configuration
     tasks.named("githubRelease") {
         repository = "shipkit/shipkit-changelog"
         changelog = file("changelog.md")
-        writeToken = "secret"
+        newTagRevision = "ff2fb22b3bb2fb08164c126c0e2055d57dee441b"
+        githubToken = "secret"
     }
 ```
 
@@ -251,8 +262,11 @@ Complete task configuration
         //The release tag, default as below
         releaseName = "v" + project.version
         
-        //GitHub write token, *no default*
-        writeToken = "secret"
+        //SHA of the revision from which release is created; *no default*
+        newTagRevision = "ff2fb22b3bb2fb08164c126c0e2055d57dee441b"
+        
+        //Github token used for posting to GH API, *no default*
+        githubToken = "secret"
     }
 ``` 
 

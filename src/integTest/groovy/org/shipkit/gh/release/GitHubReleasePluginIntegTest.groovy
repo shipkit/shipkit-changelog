@@ -25,7 +25,8 @@ class GitHubReleasePluginIntegTest extends BaseSpecification {
             tasks.named("githubRelease") {
                 repository = "shipkit/shipkit-changelog"
                 changelog = file("changelog.md")
-                writeToken = "secret"
+                newTagRevision = "ff2fb22b3bb2fb08164c126c0e2055d57dee441b"
+                githubToken = "secret"
             }
         """
 
@@ -55,8 +56,11 @@ class GitHubReleasePluginIntegTest extends BaseSpecification {
                 //The release tag, default as below
                 releaseName = "v" + project.version
                 
-                //GitHub write token, *no default*
-                writeToken = "secret"
+                //SHA of the revision from which release is created; *no default*
+                newTagRevision = "ff2fb22b3bb2fb08164c126c0e2055d57dee441b"
+                
+                //Github token used for posting to GH API, *no default*
+                githubToken = "secret"
             }
         """
 
@@ -73,7 +77,7 @@ class GitHubReleasePluginIntegTest extends BaseSpecification {
                 repository = "shipkit/shipkit-changelog"
                 changelog = file("changelog.md")
                 newTagRevision = "ff2fb22b3bb2fb08164c126c0e2055d57dee441b"
-                writeToken = "secret"
+                githubToken = "secret"
             }
         """
 

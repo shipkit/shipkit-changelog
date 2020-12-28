@@ -27,7 +27,7 @@ class ChangelogPluginIntegTest extends BaseSpecification {
             
             tasks.named("generateChangelog") {
                 previousRevision = "v3.3.10"
-                readOnlyToken = "a0a4c0f41c200f7c653323014d6a72a127764e17"
+                githubToken = "secret"
                 repository = "mockito/mockito"
             }
         """
@@ -67,8 +67,8 @@ class ChangelogPluginIntegTest extends BaseSpecification {
                 //The release version, default as below
                 version = project.version       
                 
-                //Token that enables querying GitHub, safe to check-in because it is read-only, *no default*              
-                readOnlyToken = "a0a4c0f41c200f7c653323014d6a72a127764e17"
+                //Token used for fetching tickets; same token is used for posting - should remain unexposed, *no default*
+                githubToken = "secret"
                 
                 //Repository to look for tickets, *no default*
                 repository = "mockito/mockito"
