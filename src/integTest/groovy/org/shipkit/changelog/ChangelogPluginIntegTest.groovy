@@ -1,32 +1,23 @@
 package org.shipkit.changelog
 
-
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import org.shipkit.BaseSpecification
 
 /**
  * Only smoke test, forever! Don't add more tests here, instead cover the complexity in lower level unit tests.
- *
- * Once we have a couple of releases (tags) we should unignore this test
- * and let it run against "this" repo.
  */
 class ChangelogPluginIntegTest extends BaseSpecification {
 
     @Rule TemporaryFolder tmp = new TemporaryFolder()
 
-    def setup() {
-        file("settings.gradle")
-    }
-
-    def "basic task configuration"() {
+    def "basic task configuration with no previous version"() {
         file("build.gradle") << """
             plugins {  
                 id 'org.shipkit.shipkit-changelog'
             }
             
             tasks.named("generateChangelog") {
-                previousRevision = "v3.3.10"
                 githubToken = "secret"
                 repository = "mockito/mockito"
             }
@@ -67,8 +58,8 @@ class ChangelogPluginIntegTest extends BaseSpecification {
                 //The release version, default as below
                 version = project.version       
                 
-                //Token used for fetching tickets; same token is used for posting - should remain unexposed, *no default*
-                githubToken = "secret"
+                //Token that enables querying GitHub, safe to check-in because it is read-only, *no default*              
+                githubToken = "a0a4c0f41c200f7c653323014d6a72a127764e17"
                 
                 //Repository to look for tickets, *no default*
                 repository = "mockito/mockito"

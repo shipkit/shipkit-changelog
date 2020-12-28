@@ -3,11 +3,8 @@ package org.shipkit.changelog;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
-import org.gradle.api.tasks.Input;
-import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.Optional;
-import org.gradle.api.tasks.OutputFile;
-import org.gradle.api.tasks.TaskAction;
+import org.gradle.api.tasks.*;
 
 import java.io.File;
 import java.util.*;
@@ -51,11 +48,23 @@ public class GenerateChangelogTask extends DefaultTask {
         this.ghUrl = ghUrl;
     }
 
+    /**
+     * Previous revision for changelog generation.
+     * The changelog is generated between {@code #getPreviousRevision()} and {@link #getRevision()}.
+     *
+     * This property is marked as {@code Optional} because the {@code null} value is permitted.
+     * In this case the task will use "HEAD" as previous revision.
+     * This way, the task behaves gracefully when generating changelog for the first time (very first version).
+     */
     @Input
+    @Optional
     public String getPreviousRevision() {
         return previousRevision;
     }
 
+    /**
+     * See {@link #getPreviousRevision()}
+     */
     public void setPreviousRevision(String previousRevision) {
         this.previousRevision = previousRevision;
     }
@@ -69,11 +78,18 @@ public class GenerateChangelogTask extends DefaultTask {
         this.version = version;
     }
 
+    /**
+     * Target revision for changelog generation.
+     * The changelog is generated between {@link #getPreviousRevision()} and {@code #getRevision()}.
+     */
     @Input
     public String getRevision() {
         return revision;
     }
 
+    /**
+     * See {@link #getRevision()}
+     */
     public void setRevision(String revision) {
         this.revision = revision;
     }
@@ -153,6 +169,7 @@ public class GenerateChangelogTask extends DefaultTask {
         ProcessRunner runner = new ProcessRunner(workingDir);
         GitLogProvider logProvider = new GitLogProvider(runner);
 
+        String previousRevision = this.previousRevision != null? this.previousRevision : "master";
         LOG.lifecycle("Finding commits between {}..{} in dir: {}", previousRevision, revision, workingDir);
         Collection<GitCommit> commits = new GitCommitProvider(logProvider).getCommits(previousRevision, revision);
 
