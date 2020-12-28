@@ -39,8 +39,9 @@ plugins {
 
 tasks.named("generateChangelog") {
     previousRevision = "v0.0.1"
-    readOnlyToken = "1234c0f41c200f7c653323014d6a72a127764e17"
     repository = "shipkit/shipkit-changelog"
+    githubToken = System.getenv("GITHUB_TOKEN") // using env var to avoid checked-in secrets
+    newTagRevision = System.getenv("GIT_SHA")   // using an env var automatically exported by GH action
 }
 
 ```
@@ -59,15 +60,16 @@ Realistic example, also uses a sibling plugin [shipkit-auto-version](https://git
 
     tasks.named("generateChangelog") {
         previousRevision = project.ext.'shipkit-auto-version.previous-tag'
-        readOnlyToken = "1234c0f41c200f7c653323014d6a72a127764e17"
+        githubToken = System.getenv("GITHUB_TOKEN") // using env var to avoid checked-in secrets
         repository = "shipkit/shipkit-changelog"
     }
     
     tasks.named("githubRelease") {
         dependsOn tasks.named("generateChangelog")
         repository = "shipkit/shipkit-changelog"
-        changelog = tasks.named("generateChangelog").get().outputFile                
-        writeToken = System.getenv("GH_WRITE_TOKEN")
+        changelog = tasks.named("generateChangelog").get().outputFile
+        githubToken = System.getenv("GITHUB_TOKEN") // using env var to avoid checked-in secrets
+        newTagRevision = System.getenv("GIT_SHA")   // using an env var automatically exported by GH action
     }
 ```
 
@@ -75,18 +77,17 @@ Realistic example, also uses a sibling plugin [shipkit-auto-version](https://git
 
 ### GitHub access tokens
 
-The standard way to enable automated tasks read/write to GitHub are [personal access tokens](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token#creating-a-token).
-When creating the tokens, please select the following token **scopes** ([more info on scopes](https://docs.github.com/en/free-pro-team@latest/developers/apps/scopes-for-oauth-apps)):
+The standard way to enable the automated tasks read/write to GitHub are the
+[personal access tokens](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token#creating-a-token).
+Shipkit Changelog plugin needs a token to fetch tickets and post releases via GH REST API. 
+The token is set in the task configuration in \*.gradle file via `githubToken` property.
+When creating a new token using GH UI, make sure to select the `repo/public_repo` *scope*
+([more info on scopes](https://docs.github.com/en/free-pro-team@latest/developers/apps/scopes-for-oauth-apps)).
 
-When using GH actions you can use [GITHUB_TOKEN](https://docs.github.com/en/free-pro-team@latest/actions/reference/authentication-in-a-workflow) 
-for `readOnlyToken` and `writeToken`
-
-- readOnlyToken - should have **no scope**, this way it only provides read-only access to **public** repositories
-(it **does not** provide read-only access to private repositories).
-  
-  You can leave this field empty for local development, in this case you are limited to 60 requests per hour.  
-
-- writeToken - needs 'repo/public_repo' scope to post releases via GH REST API.
+When using GH Actions then `GITHUB_TOKEN` environment variable is exported *by default*.
+Read more about GH Action's [GITHUB_TOKEN](https://docs.github.com/en/free-pro-team@latest/actions/reference/authentication-in-a-workflow).
+In Shipkit Changelog plugin the `githubToken` property should be supplied by the env variable to keep things safe.
+The token grants write access to the repository and it ***should not*** be exposed / checked-in.
 
 ### Fetch depth on CI
 
@@ -101,6 +102,16 @@ has negligible performance implication (adds ~2 secs to the checkout).
   with:
     fetch-depth: '0' # will fetch the entire history
 ```
+
+### Target revision
+
+For proper release tagging the `newTagRevision` property needs to be set.
+This property is set with the SHA of the commit that will be tagged when GH release is created.
+Recommended way to do this is to use your CI system's built-in env variable that exposes the revision the CI is building.
+GH actions expose `GITHUB_SHA` and hence we are using it in the code samples.
+You can read more about all [default env variables](https://docs.github.com/en/free-pro-team@latest/actions/reference/environment-variables#default-environment-variables) exposed by GH actions.
+Note that you can use *any* CI system, not necessarily GH actions.
+Just refer to the documentation of your CI system to learn what are its default env variables.
 
 ## Customers / sample projects
 
@@ -164,8 +175,9 @@ Basic task configuration
     
     tasks.named("generateChangelog") {
         previousRevision = "v3.3.10"
-        readOnlyToken = "1234c0f41c200f7c653323014d6a72a127764e17"
         repository = "mockito/mockito"
+        githubToken = System.getenv("GITHUB_TOKEN") // using env var to avoid checked-in secrets
+        newTagRevision = System.getenv("GIT_SHA")   // using an env var automatically exported by GH action
     }
 ```
 
@@ -200,13 +212,13 @@ Complete task configuration
         revision = "HEAD" 
         
         //The release version, default as below
-        version = project.version       
-        
-        //Optional token (null by default) that enables querying GitHub with higher rate limit, safe to check-in because it is read-only
-        readOnlyToken = "1234c0f41c200f7c653323014d6a72a127764e17"
+        version = project.version             
         
         //Repository to look for tickets, *no default*
         repository = "mockito/mockito"
+        
+        //Token used for fetching tickets, *no default*
+        githubToken = System.getenv("GITHUB_TOKEN") // using env var to avoid checked-in secrets 
     }              
 ```
 
@@ -223,7 +235,8 @@ Basic task configuration
     tasks.named("githubRelease") {
         repository = "shipkit/shipkit-changelog"
         changelog = file("changelog.md")
-        writeToken = "secret"
+        githubToken = System.getenv("GITHUB_TOKEN") // using env var to avoid checked-in secrets
+        newTagRevision = System.getenv("GIT_SHA")   // using an env var automatically exported by GH action        
     }
 ```
 
@@ -249,10 +262,13 @@ Complete task configuration
         releaseName = "v" + project.version
         
         //The release tag, default as below
-        releaseName = "v" + project.version
+        releaseName = "v" + project.version      
+
+        //Github token used for posting to GH API, *no default*
+        githubToken = System.getenv("GITHUB_TOKEN") // using env var to avoid checked-in secrets
         
-        //GitHub write token, *no default*
-        writeToken = "secret"
+        //SHA of the revision from which release is created; *no default*
+        newTagRevision = System.getenv("GIT_SHA")   // using an env var automatically exported by GH action        
     }
 ``` 
 
