@@ -84,7 +84,16 @@ The token is set in the task configuration in \*.gradle file via `githubToken` p
 When creating a new token using GH UI, make sure to select the `repo/public_repo` *scope*
 ([more info on scopes](https://docs.github.com/en/free-pro-team@latest/developers/apps/scopes-for-oauth-apps)).
 
-When using GH Actions then `GITHUB_TOKEN` environment variable is exported *by default*.
+When using GH Actions then you can use the built-in `GITHUB_TOKEN` secret.
+You can pass it via an environment variable:
+
+```yaml
+    - name: Publish githubRelease
+      run: ./gradlew githubRelease
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+```
+
 Read more about GH Action's [GITHUB_TOKEN](https://docs.github.com/en/free-pro-team@latest/actions/reference/authentication-in-a-workflow).
 In Shipkit Changelog plugin the `githubToken` property should be supplied by the env variable to keep things safe.
 The token grants write access to the repository and it ***should not*** be exposed / checked-in.
