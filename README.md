@@ -84,8 +84,8 @@ The token is set in the task configuration in \*.gradle file via `githubToken` p
 When creating a new token using GH UI, make sure to select the `repo/public_repo` *scope*
 ([more info on scopes](https://docs.github.com/en/free-pro-team@latest/developers/apps/scopes-for-oauth-apps)).
 
-When using GH Actions then `GITHUB_TOKEN` is available in secret context.
-You must pass it to step running gradle as environment variable:
+When using GH Actions then you can use the built-in `GITHUB_TOKEN` secret.
+You can pass it via an environment variable:
 
 ```yaml
     - name: Publish githubRelease
