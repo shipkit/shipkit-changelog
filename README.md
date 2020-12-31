@@ -41,7 +41,7 @@ tasks.named("generateChangelog") {
     previousRevision = "v0.0.1"
     repository = "shipkit/shipkit-changelog"
     githubToken = System.getenv("GITHUB_TOKEN") // using env var to avoid checked-in secrets
-    newTagRevision = System.getenv("GIT_SHA")   // using an env var automatically exported by GH action
+    newTagRevision = System.getenv("GITHUB_SHA")   // using an env var automatically exported by GH action
 }
 
 ```
@@ -69,7 +69,7 @@ Realistic example, also uses a sibling plugin [shipkit-auto-version](https://git
         repository = "shipkit/shipkit-changelog"
         changelog = tasks.named("generateChangelog").get().outputFile
         githubToken = System.getenv("GITHUB_TOKEN") // using env var to avoid checked-in secrets
-        newTagRevision = System.getenv("GIT_SHA")   // using an env var automatically exported by GH action
+        newTagRevision = System.getenv("GITHUB_SHA")   // using an env var automatically exported by GH action
     }
 ```
 
@@ -186,7 +186,7 @@ Basic task configuration
         previousRevision = "v3.3.10"
         repository = "mockito/mockito"
         githubToken = System.getenv("GITHUB_TOKEN") // using env var to avoid checked-in secrets
-        newTagRevision = System.getenv("GIT_SHA")   // using an env var automatically exported by GH action
+        newTagRevision = System.getenv("GITHUB_SHA")   // using an env var automatically exported by GH action
     }
 ```
 
@@ -245,7 +245,7 @@ Basic task configuration
         repository = "shipkit/shipkit-changelog"
         changelog = file("changelog.md")
         githubToken = System.getenv("GITHUB_TOKEN") // using env var to avoid checked-in secrets
-        newTagRevision = System.getenv("GIT_SHA")   // using an env var automatically exported by GH action        
+        newTagRevision = System.getenv("GITHUB_SHA")   // using an env var automatically exported by GH action        
     }
 ```
 
@@ -277,7 +277,7 @@ Complete task configuration
         githubToken = System.getenv("GITHUB_TOKEN") // using env var to avoid checked-in secrets
         
         //SHA of the revision from which release is created; *no default*
-        newTagRevision = System.getenv("GIT_SHA")   // using an env var automatically exported by GH action        
+        newTagRevision = System.getenv("GITHUB_SHA")   // using an env var automatically exported by GH action        
     }
 ``` 
 
