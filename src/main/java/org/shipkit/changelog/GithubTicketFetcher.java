@@ -6,16 +6,16 @@ import com.eclipsesource.json.JsonValue;
 import java.util.*;
 import java.util.logging.Logger;
 
-class GitHubTicketFetcher {
+class GithubTicketFetcher {
 
-    private static final Logger LOG = Logger.getLogger(GitHubTicketFetcher.class.getName());
-    private final GitHubListFetcher fetcher;
+    private static final Logger LOG = Logger.getLogger(GithubTicketFetcher.class.getName());
+    private final GithubListFetcher fetcher;
 
-    GitHubTicketFetcher(String apiUrl, String repository, String githubToken) {
-        this(new GitHubListFetcher(apiUrl, repository, githubToken));
+    GithubTicketFetcher(String apiUrl, String repository, String githubToken) {
+        this(new GithubListFetcher(apiUrl, repository, githubToken));
     }
 
-    GitHubTicketFetcher(GitHubListFetcher fetcher) {
+    GithubTicketFetcher(GithubListFetcher fetcher) {
         this.fetcher = fetcher;
     }
 
@@ -24,7 +24,7 @@ class GitHubTicketFetcher {
         if (ticketIds.isEmpty()) {
             return out;
         }
-        LOG.info("Querying GitHub API for " + ticketIds.size() + " tickets.");
+        LOG.info("Querying Github API for " + ticketIds.size() + " tickets.");
 
         Queue<Long> tickets = queuedTicketNumbers(ticketIds);
 
@@ -37,7 +37,7 @@ class GitHubTicketFetcher {
                         page));
             }
         } catch (Exception e) {
-            throw new RuntimeException("Problems fetching " + ticketIds.size() + " tickets from GitHub", e);
+            throw new RuntimeException("Problems fetching " + ticketIds.size() + " tickets from Github", e);
         }
         return out;
     }
@@ -76,7 +76,7 @@ class GitHubTicketFetcher {
 
         List<Ticket> pagedTickets = new ArrayList<>();
         for (JsonValue issue : issues) {
-            Ticket i = GitHubImprovementsJSON.toImprovement(issue.asObject());
+            Ticket i = GithubImprovementsJSON.toImprovement(issue.asObject());
             if (tickets.remove(i.getId())) {
                 pagedTickets.add(i);
                 if (tickets.isEmpty()) {

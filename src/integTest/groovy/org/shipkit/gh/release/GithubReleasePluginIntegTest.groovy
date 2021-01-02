@@ -6,9 +6,9 @@ import org.junit.rules.TemporaryFolder
 import org.shipkit.BaseSpecification
 
 /**
- * Smoke test, we don't want an integration test that actually posts to GitHub
+ * Smoke test, we don't want an integration test that actually posts to Github
  */
-class GitHubReleasePluginIntegTest extends BaseSpecification {
+class GithubReleasePluginIntegTest extends BaseSpecification {
 
     @Rule TemporaryFolder tmp = new TemporaryFolder()
 
@@ -41,7 +41,7 @@ class GitHubReleasePluginIntegTest extends BaseSpecification {
             }
                         
             tasks.named("githubRelease") {
-                //GitHub API url, configure if you use GitHub Enterprise, default as below
+                //Github API url, configure if you use Github Enterprise, default as below
                 ghApiUrl = "https://api.github.com"
                 
                 //Repository where to create a release, *no default*
@@ -85,7 +85,7 @@ class GitHubReleasePluginIntegTest extends BaseSpecification {
         def result = runner("githubRelease", "-s").buildAndFail()
 
         then: //fails because we don't have the credentials
-        result.output.contains """Unable to post release to GitHub.
+        result.output.contains """Unable to post release to Github.
     - url: https://api.github.com/repos/shipkit/shipkit-changelog/releases
     - release tag: v1.2.3
     - release name: v1.2.3

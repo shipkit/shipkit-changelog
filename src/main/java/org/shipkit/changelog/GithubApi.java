@@ -15,15 +15,15 @@ import java.util.Optional;
 import java.util.TimeZone;
 
 /**
- * Wrapper for making REST requests to GitHub API
+ * Wrapper for making REST requests to Github API
  */
-public class GitHubApi {
+public class GithubApi {
 
-    private static final Logger LOG = Logging.getLogger(GitHubApi.class);
+    private static final Logger LOG = Logging.getLogger(GithubApi.class);
 
     private final String authToken;
 
-    public GitHubApi(String authToken) {
+    public GithubApi(String authToken) {
         this.authToken = authToken;
     }
 
@@ -58,10 +58,10 @@ public class GitHubApi {
         String rateRemaining = c.getHeaderField("X-RateLimit-Remaining");
         String rateLimit = c.getHeaderField("X-RateLimit-Limit");
         //TODO instead of a lifecycle message, we should include the rate limiting information only when the request fails
-        LOG.lifecycle("GitHub API rate info => Remaining : " + rateRemaining + ", Limit : " + rateLimit + ", Reset at: " + resetInLocalTime);
+        LOG.lifecycle("Github API rate info => Remaining : " + rateRemaining + ", Limit : " + rateLimit + ", Reset at: " + resetInLocalTime);
 
         String linkHeader = c.getHeaderField("Link");
-        LOG.info("Next page 'Link' from GitHub: {}", linkHeader);
+        LOG.info("Next page 'Link' from Github: {}", linkHeader);
 
         String content = call(method, c);
         return new Response(content, linkHeader);

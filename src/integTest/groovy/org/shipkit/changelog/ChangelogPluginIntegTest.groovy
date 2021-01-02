@@ -40,10 +40,10 @@ class ChangelogPluginIntegTest extends BaseSpecification {
                 //Working directory for running 'git' commands, default as below
                 workingDir = project.projectDir                
                 
-                //GitHub url, configure if you use GitHub Enterprise, default as below
+                //Github url, configure if you use Github Enterprise, default as below
                 ghUrl = "https://github.com"
                 
-                //GitHub API url, configure if you use GitHub Enterprise, default as below
+                //Github API url, configure if you use Github Enterprise, default as below
                 ghApiUrl = "https://api.github.com"
                 
                 //The release date, the default is today date 
@@ -58,7 +58,7 @@ class ChangelogPluginIntegTest extends BaseSpecification {
                 //The release version, default as below
                 version = project.version       
                 
-                //Token that enables querying GitHub, safe to check-in because it is read-only, *no default*              
+                //Token that enables querying Github, safe to check-in because it is read-only, *no default*              
                 githubToken = "a0a4c0f41c200f7c653323014d6a72a127764e17"
                 
                 //Repository to look for tickets, *no default*
