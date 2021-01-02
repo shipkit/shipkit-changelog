@@ -41,10 +41,10 @@ class ChangelogPluginIntegTest extends BaseSpecification {
                 workingDir = project.projectDir                
                 
                 //Github url, configure if you use Github Enterprise, default as below
-                ghUrl = "https://github.com"
+                githubUrl = "https://github.com"
                 
                 //Github API url, configure if you use Github Enterprise, default as below
-                ghApiUrl = "https://api.github.com"
+                githubApiUrl = "https://api.github.com"
                 
                 //The release date, the default is today date 
                 date = "2020-06-06"

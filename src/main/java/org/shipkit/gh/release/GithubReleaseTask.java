@@ -19,7 +19,7 @@ public class GithubReleaseTask extends DefaultTask {
 
     private final static Logger LOG = Logging.getLogger(GithubReleaseTask.class);
 
-    private String ghApiUrl = null;
+    private String githubApiUrl = null;
     private String repository = null;
     private String releaseName = null;
     private String releaseTag = null;
@@ -28,12 +28,12 @@ public class GithubReleaseTask extends DefaultTask {
     private String newTagRevision = null;
 
     @Input
-    public String getGhApiUrl() {
-        return ghApiUrl;
+    public String getGithubApiUrl() {
+        return githubApiUrl;
     }
 
-    public void setGhApiUrl(String ghApiUrl) {
-        this.ghApiUrl = ghApiUrl;
+    public void setGithubApiUrl(String githubApiUrl) {
+        this.githubApiUrl = githubApiUrl;
     }
 
     @Input
@@ -98,7 +98,7 @@ public class GithubReleaseTask extends DefaultTask {
     }
 
     /**
-     * Token required by GH API to post a new release.
+     * Token required by Github API to post a new release.
      * This token should have *write* permission to the repo.
      *
      * @param githubToken token with write permissions
@@ -125,7 +125,7 @@ public class GithubReleaseTask extends DefaultTask {
     }
 
     @TaskAction public void postRelease() {
-        String url = ghApiUrl + "/repos/" + repository + "/releases";
+        String url = githubApiUrl + "/repos/" + repository + "/releases";
 
         JsonObject body = new JsonObject();
         body.add("tag_name", releaseTag);
