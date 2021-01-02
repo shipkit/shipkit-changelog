@@ -9,15 +9,15 @@ import org.gradle.api.logging.Logging;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.TaskAction;
-import org.shipkit.changelog.GitHubApi;
+import org.shipkit.changelog.GithubApi;
 import org.shipkit.changelog.IOUtil;
 
 import java.io.File;
 import java.io.IOException;
 
-public class GitHubReleaseTask extends DefaultTask {
+public class GithubReleaseTask extends DefaultTask {
 
-    private final static Logger LOG = Logging.getLogger(GitHubReleaseTask.class);
+    private final static Logger LOG = Logging.getLogger(GithubReleaseTask.class);
 
     private String ghApiUrl = null;
     private String repository = null;
@@ -117,7 +117,7 @@ public class GitHubReleaseTask extends DefaultTask {
 
     /**
      * Property required to specify revision for the new tag.
-     * The property's value is passed to GitHub API's
+     * The property's value is passed to Github API's
      * 'target_commitish' parameter in {@link #postRelease()} method.
      */
     public void setNewTagRevision(String newTagRevision) {
@@ -134,13 +134,13 @@ public class GitHubReleaseTask extends DefaultTask {
         String releaseNotesTxt = IOUtil.readFully(changelog);
         body.add("body", releaseNotesTxt);
 
-        GitHubApi gitHubApi = new GitHubApi(githubToken);
+        GithubApi githubApi = new GithubApi(githubToken);
         try {
-            String response = gitHubApi.post(url, body.toString());
+            String response = githubApi.post(url, body.toString());
             String htmlUrl = Json.parse(response).asObject().getString("html_url", "");
-            LOG.lifecycle("Posted release to GitHub: " + htmlUrl);
+            LOG.lifecycle("Posted release to Github: " + htmlUrl);
         } catch (IOException e) {
-            throw new GradleException("Unable to post release to GitHub.\n" +
+            throw new GradleException("Unable to post release to Github.\n" +
                     "  - url: " + url + "\n" +
                     "  - release tag: " + releaseTag + "\n" +
                     "  - release name: " + releaseName + "\n" +

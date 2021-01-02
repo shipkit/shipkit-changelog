@@ -5,9 +5,9 @@ gradlePlugin {
             id = 'org.shipkit.shipkit-changelog'
             implementationClass = 'org.shipkit.changelog.ChangelogPlugin'
         }
-        gitHubRelease {
+        githubRelease {
             id = 'org.shipkit.shipkit-gh-release'
-            implementationClass = 'org.shipkit.gh.release.GitHubReleasePlugin'
+            implementationClass = 'org.shipkit.gh.release.GithubReleasePlugin'
         }
     }
 }
@@ -18,12 +18,12 @@ pluginBundle {
     plugins {
         changelog {
             displayName = 'Shipkit changelog plugin'
-            description = 'Generates changelog based on ticked IDs found in commit messages and GitHub pull request information'
+            description = 'Generates changelog based on ticked IDs found in commit messages and Github pull request information'
             tags = ['ci', 'shipkit', 'changelog']
         }
-        gitHubRelease {
-            displayName = 'Shipkit GitHub release plugin'
-            description = 'Posts a release to GitHub using the REST API'
+        githubRelease {
+            displayName = 'Shipkit Github release plugin'
+            description = 'Posts a release to Github using the REST API'
             tags = ['ci', 'shipkit', 'github', 'release']
         }
     }

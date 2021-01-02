@@ -10,7 +10,7 @@ import java.io.File;
 import java.util.*;
 
 /**
- * Generates changelog based on the GitHub ticked ids found in commit messages.
+ * Generates changelog based on the Github ticked ids found in commit messages.
  */
 public class GenerateChangelogTask extends DefaultTask {
 
@@ -157,9 +157,9 @@ public class GenerateChangelogTask extends DefaultTask {
     }
 
     /**
-     * GitHub token used to pull GitHub issues.
+     * Github token used to pull Github issues.
      * The same token is used to post a new release:
-     * {@link org.shipkit.gh.release.GitHubReleaseTask#setGithubToken(String)}
+     * {@link org.shipkit.gh.release.GithubReleaseTask#setGithubToken(String)}
      */
     public void setGithubToken(String githubToken) {
         this.githubToken = githubToken;
@@ -183,10 +183,10 @@ public class GenerateChangelogTask extends DefaultTask {
 
         LOG.lifecycle("Fetching ticket info from {}/{} based on {} ids {}", ghApiUrl, repository, ticketIds.size(), ticketIds);
 
-        GitHubTicketFetcher fetcher = new GitHubTicketFetcher(ghApiUrl, repository, githubToken);
+        GithubTicketFetcher fetcher = new GithubTicketFetcher(ghApiUrl, repository, githubToken);
         Collection<Ticket> improvements = fetcher.fetchTickets(ticketIds);
 
-        LOG.lifecycle("Generating changelog based on {} tickets from GitHub", improvements.size());
+        LOG.lifecycle("Generating changelog based on {} tickets from Github", improvements.size());
         String changelog = ChangelogFormat.formatChangelog(contributors, improvements, commits.size(), version,
                 previousRevision, ghUrl + "/" + repository, date);
 

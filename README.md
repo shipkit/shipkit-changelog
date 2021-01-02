@@ -14,8 +14,8 @@ Encourage and help software developers set up their releases to be fully automat
 
 # Shipkit Changelog Gradle plugin
 
-Our plugin generates changelog based on commit history and GitHub pull requests/issues. 
-Optionally, the changelog content can be posted to GitHub Releases.
+Our plugin generates changelog based on commit history and Github pull requests/issues. 
+Optionally, the changelog content can be posted to Github Releases.
 This plugin is very small (<1kloc) and has a single dependency "com.eclipsesource.minimal-json:minimal-json:0.9.5".
 The dependency is very small (30kb), stable (no changes since 2017), and brings zero transitive dependencies.
 
@@ -75,9 +75,9 @@ Realistic example, also uses a sibling plugin [shipkit-auto-version](https://git
 
 ## Configuration reference
 
-### GitHub access tokens
+### Github access tokens
 
-The standard way to enable the automated tasks read/write to GitHub are the
+The standard way to enable the automated tasks read/write to Github are the
 [personal access tokens](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token#creating-a-token).
 Shipkit Changelog plugin needs a token to fetch tickets and post releases via GH REST API. 
 The token is set in the task configuration in \*.gradle file via `githubToken` property.
@@ -136,23 +136,23 @@ Just refer to the documentation of your CI system to learn what are its default 
 There are other Gradle plugins or tools that provide similar functionality:
 
 1. [github-changelog-generator](https://github.com/github-changelog-generator/github-changelog-generator)
-is a popular Ruby Gem (6K stars on GitHub) that generates changelog based on commits/pull requests
-but does not publish GitHub releases ([#56](https://github.com/github-changelog-generator/github-changelog-generator/issues/56)).
-Our plugin is a pure Gradle solution and it can publish a GitHub release.
+is a popular Ruby Gem (6K stars on Github) that generates changelog based on commits/pull requests
+but does not publish Github releases ([#56](https://github.com/github-changelog-generator/github-changelog-generator/issues/56)).
+Our plugin is a pure Gradle solution and it can publish a Github release.
 
-2. GitHub Action [Release Drafter](https://github.com/marketplace/actions/release-drafter)
+2. Github Action [Release Drafter](https://github.com/marketplace/actions/release-drafter)
 drafts the next release notes as pull requests are merged.
 This is a good option when the team wants to release on demand. 
 Our plugin is great for fully automated releases on every merged pull request.
 
 3. Gradle Plugin [git-changelog-gradle-plugin](https://github.com/tomasbjerre/git-changelog-gradle-plugin)
-seems like a nice plugin, maintained but not very popular (<50 stars on GitHub) and pulls in a lot of other dependencies
+seems like a nice plugin, maintained but not very popular (<50 stars on Github) and pulls in a lot of other dependencies
 ([#21](https://github.com/tomasbjerre/git-changelog-gradle-plugin/issues/21)).
 Our plugin is simpler, smaller and brings only one dependency (that is very small, simple and has no transitive dependencies).
 
 4. Semantic Release [semantic-release](https://github.com/semantic-release/semantic-release)
 is a npm module for fully automated "semantic" releases, with changelog generation.  
-It has impressive 10K stars on GitHub.
+It has impressive 10K stars on Github.
 Our plugin is less opinionated, smaller, simpler and a pure Gradle solution.
 
 Pick the best tool that work for you and start automating releases and changelog generation!
@@ -163,12 +163,12 @@ Pick the best tool that work for you and start automating releases and changelog
 
 1. Collect commits between 2 revisions
 2. Find ticket IDs based on '#' prefix in commit messages (e.g. looking for #1, #50, etc.)
-3. Use GitHub REST API to collect ticket information (issue or pull request) from GitHub
+3. Use Github REST API to collect ticket information (issue or pull request) from Github
 4. Create markdown file using the PR/issue titles 
 
-### Posting GitHub releases
+### Posting Github releases
 
-Uses GitHub REST API to post releases. 
+Uses Github REST API to post releases. 
 
 ## Usage
 
@@ -205,10 +205,10 @@ Complete task configuration
         //Working directory for running 'git' commands, default as below
         workingDir = project.projectDir                
         
-        //GitHub url, configure if you use GitHub Enterprise, default as below
+        //Github url, configure if you use Github Enterprise, default as below
         ghUrl = "https://github.com"
         
-        //GitHub API url, configure if you use GitHub Enterprise, default as below
+        //Github API url, configure if you use Github Enterprise, default as below
         ghApiUrl = "https://api.github.com"
         
         //The release date, the default is today date 
@@ -234,7 +234,7 @@ Complete task configuration
 ### 'org.shipkit.shipkit-gh-release'
 
 Basic task configuration
-(source: [GitHubReleasePluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/gh/release/GitHubReleasePluginIntegTest.groovy))
+(source: [GithubReleasePluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/gh/release/GithubReleasePluginIntegTest.groovy))
 
 ```groovy
     plugins {
@@ -250,7 +250,7 @@ Basic task configuration
 ```
 
 Complete task configuration
-(source: [GitHubReleasePluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/gh/release/GitHubReleasePluginIntegTest.groovy))
+(source: [GithubReleasePluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/gh/release/GithubReleasePluginIntegTest.groovy))
 
 ```groovy
     plugins {
@@ -258,7 +258,7 @@ Complete task configuration
     }
                 
     tasks.named("githubRelease") {
-        //GitHub API url, configure if you use GitHub Enterprise, default as below
+        //Github API url, configure if you use Github Enterprise, default as below
         ghApiUrl = "https://api.github.com"
         
         //Repository where to create a release, *no default*

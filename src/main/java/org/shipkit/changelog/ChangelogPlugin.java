@@ -21,7 +21,7 @@ public class ChangelogPlugin implements Plugin<Project> {
             t.setGhUrl("https://github.com");
             t.setWorkingDir(project.getProjectDir());
             t.setVersion("" + project.getVersion());
-            t.getOutputs().upToDateWhen(Specs.satisfyNone()); //depends on state of Git repo, GitHub, etc.
+            t.getOutputs().upToDateWhen(Specs.satisfyNone()); //depends on state of Git repo, Github, etc.
         });
     }
 }

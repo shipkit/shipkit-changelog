@@ -4,10 +4,10 @@ import com.eclipsesource.json.Json
 import com.eclipsesource.json.JsonArray
 import spock.lang.Specification
 
-class GitHubTicketFetcherTest extends Specification {
+class GithubTicketFetcherTest extends Specification {
 
-    def listFetcher = Mock(GitHubListFetcher)
-    def fetcher = new GitHubTicketFetcher(listFetcher)
+    def listFetcher = Mock(GithubListFetcher)
+    def fetcher = new GithubTicketFetcher(listFetcher)
 
     def "empty tickets"() {
         expect:

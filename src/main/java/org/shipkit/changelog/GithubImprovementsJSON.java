@@ -3,12 +3,12 @@ package org.shipkit.changelog;
 import com.eclipsesource.json.JsonObject;
 
 /**
- * Provides means to parse JsonObjects returned from calling GitHub API.
+ * Provides means to parse JsonObjects returned from calling Github API.
  */
-class GitHubImprovementsJSON {
+class GithubImprovementsJSON {
 
     /**
-     * Parses GitHub JsonObject in accordance to the API (https://developer.github.com/v3/issues/)
+     * Parses Github JsonObject in accordance to the API (https://developer.github.com/v3/issues/)
      * @param issue
      */
     static Ticket toImprovement(JsonObject issue) {
