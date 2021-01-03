@@ -86,11 +86,13 @@ class GithubReleasePluginIntegTest extends BaseSpecification {
 
         then: //fails because we don't have the credentials
         result.output.contains """Unable to post release to Github.
-    - url: https://api.github.com/repos/shipkit/shipkit-changelog/releases
-    - release tag: v1.2.3
-    - release name: v1.2.3
-    - token: sec...
-    - content:
-  Spanking new release!"""
+  * url: https://api.github.com/repos/shipkit/shipkit-changelog/releases
+  * release tag: v1.2.3
+  * release name: v1.2.3
+  * token: sec...
+  * content:
+Spanking new release!
+
+  * underlying problem:"""
     }
 }

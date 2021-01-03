@@ -141,11 +141,14 @@ public class GithubReleaseTask extends DefaultTask {
             LOG.lifecycle("Posted release to Github: " + htmlUrl);
         } catch (IOException e) {
             throw new GradleException("Unable to post release to Github.\n" +
-                    "  - url: " + url + "\n" +
-                    "  - release tag: " + releaseTag + "\n" +
-                    "  - release name: " + releaseName + "\n" +
-                    "  - token: " + githubToken.substring(0, 3) + "...\n" +
-                    "  - content:\n" + releaseNotesTxt + "\n"
+                    "  * url: " + url + "\n" +
+                    "  * release tag: " + releaseTag + "\n" +
+                    "  * release name: " + releaseName + "\n" +
+                    "  * token: " + githubToken.substring(0, 3) + "...\n" +
+                    "  * content:\n" + releaseNotesTxt + "\n\n" +
+                    "  * underlying problem: " + e.getMessage() + "\n" +
+                    "  * troubleshooting: please run Gradle with '-s' to see the full stack trace or inspect the build scan\n" +
+                    "  * thank you for using Shipkit!"
                     , e);
         }
     }
