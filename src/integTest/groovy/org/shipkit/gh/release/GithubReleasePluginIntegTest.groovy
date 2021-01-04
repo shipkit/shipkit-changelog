@@ -42,7 +42,7 @@ class GithubReleasePluginIntegTest extends BaseSpecification {
                         
             tasks.named("githubRelease") {
                 //Github API url, configure if you use Github Enterprise, default as below
-                ghApiUrl = "https://api.github.com"
+                githubApiUrl = "https://api.github.com"
                 
                 //Repository where to create a release, *no default*
                 repository = "shipkit/shipkit-changelog"
@@ -59,7 +59,7 @@ class GithubReleasePluginIntegTest extends BaseSpecification {
                 //SHA of the revision from which release is created; *no default*
                 newTagRevision = "ff2fb22b3bb2fb08164c126c0e2055d57dee441b"
                 
-                //Github token used for posting to GH API, *no default*
+                //Github token used for posting to Github API, *no default*
                 githubToken = "secret"
             }
         """

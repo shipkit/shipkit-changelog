@@ -17,8 +17,8 @@ public class ChangelogPlugin implements Plugin<Project> {
             t.setRevision("HEAD");
             t.setDate(DateUtil.formatDate(new Date()));
             t.setOutputFile(new File(project.getBuildDir(), "changelog.md"));
-            t.setGhApiUrl("https://api.github.com");
-            t.setGhUrl("https://github.com");
+            t.setGithubApiUrl("https://api.github.com");
+            t.setGithubUrl("https://github.com");
             t.setWorkingDir(project.getProjectDir());
             t.setVersion("" + project.getVersion());
             t.getOutputs().upToDateWhen(Specs.satisfyNone()); //depends on state of Git repo, Github, etc.

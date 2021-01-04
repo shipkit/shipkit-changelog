@@ -10,7 +10,7 @@ public class GithubReleasePlugin implements Plugin<Project> {
 
     public void apply(Project project) {
         project.getTasks().register("githubRelease", GithubReleaseTask.class, t -> {
-            t.setGhApiUrl("https://api.github.com");
+            t.setGithubApiUrl("https://api.github.com");
             String tagName = "v" + project.getVersion();
             t.setReleaseTag(tagName);
             t.setReleaseName(tagName);

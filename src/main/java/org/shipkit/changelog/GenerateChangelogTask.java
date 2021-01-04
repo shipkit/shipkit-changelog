@@ -16,11 +16,11 @@ public class GenerateChangelogTask extends DefaultTask {
 
     private final static Logger LOG = Logging.getLogger(GenerateChangelogTask.class);
 
-    private String ghUrl;
+    private String githubUrl;
     private File outputFile;
     private File workingDir;
     private String githubToken;
-    private String ghApiUrl;
+    private String githubApiUrl;
     private String repository;
     private String previousRevision;
     private String version;
@@ -40,12 +40,12 @@ public class GenerateChangelogTask extends DefaultTask {
     }
 
     @Input
-    public String getGhUrl() {
-        return ghUrl;
+    public String getGithubUrl() {
+        return githubUrl;
     }
 
-    public void setGhUrl(String ghUrl) {
-        this.ghUrl = ghUrl;
+    public void setGithubUrl(String githubUrl) {
+        this.githubUrl = githubUrl;
     }
 
     /**
@@ -104,12 +104,12 @@ public class GenerateChangelogTask extends DefaultTask {
     }
 
     @Input
-    public String getGhApiUrl() {
-        return ghApiUrl;
+    public String getGithubApiUrl() {
+        return githubApiUrl;
     }
 
-    public void setGhApiUrl(String ghApiUrl) {
-        this.ghApiUrl = ghApiUrl;
+    public void setGithubApiUrl(String githubApiUrl) {
+        this.githubApiUrl = githubApiUrl;
     }
 
     @OutputFile
@@ -181,14 +181,14 @@ public class GenerateChangelogTask extends DefaultTask {
             contributors.add(c.getAuthor());
         }
 
-        LOG.lifecycle("Fetching ticket info from {}/{} based on {} ids {}", ghApiUrl, repository, ticketIds.size(), ticketIds);
+        LOG.lifecycle("Fetching ticket info from {}/{} based on {} ids {}", githubApiUrl, repository, ticketIds.size(), ticketIds);
 
-        GithubTicketFetcher fetcher = new GithubTicketFetcher(ghApiUrl, repository, githubToken);
+        GithubTicketFetcher fetcher = new GithubTicketFetcher(githubApiUrl, repository, githubToken);
         Collection<Ticket> improvements = fetcher.fetchTickets(ticketIds);
 
         LOG.lifecycle("Generating changelog based on {} tickets from Github", improvements.size());
         String changelog = ChangelogFormat.formatChangelog(contributors, improvements, commits.size(), version,
-                previousRevision, ghUrl + "/" + repository, date);
+                previousRevision, githubUrl + "/" + repository, date);
 
         LOG.lifecycle("Saving changelog to file: {}", outputFile);
         IOUtil.writeFile(outputFile, changelog.trim());
