@@ -5,8 +5,13 @@ gradlePlugin {
             id = 'org.shipkit.shipkit-changelog'
             implementationClass = 'org.shipkit.changelog.ChangelogPlugin'
         }
-        githubRelease {
+        githubReleaseDeprecated {
+            //TODO please remove deprecated plugin after we complete the rename, see #65
             id = 'org.shipkit.shipkit-gh-release'
+            implementationClass = 'org.shipkit.gh.release.GithubReleasePlugin'
+        }
+        githubRelease {
+            id = 'org.shipkit.shipkit-github-release'
             implementationClass = 'org.shipkit.gh.release.GithubReleasePlugin'
         }
     }
@@ -20,6 +25,11 @@ pluginBundle {
             displayName = 'Shipkit changelog plugin'
             description = 'Generates changelog based on ticked IDs found in commit messages and Github pull request information'
             tags = ['ci', 'shipkit', 'changelog']
+        }
+        githubReleaseDeprecated {
+            displayName = 'Deprecated, please use org.shipkit.shipkit-github-release'
+            description = 'Deprecated, please use org.shipkit.shipkit-github-release'
+            tags = ['ci', 'shipkit', 'github', 'release']
         }
         githubRelease {
             displayName = 'Shipkit Github release plugin'
