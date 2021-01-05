@@ -54,7 +54,7 @@ Realistic example, also uses a sibling plugin [shipkit-auto-version](https://git
 ```groovy
     plugins {
         id 'org.shipkit.shipkit-changelog'
-        id 'org.shipkit.shipkit-gh-release'
+        id 'org.shipkit.shipkit-github-release'
         id 'org.shipkit.shipkit-auto-version'
     }
 
@@ -231,15 +231,15 @@ Complete task configuration
     }              
 ```
 
-### 'org.shipkit.shipkit-gh-release'
+### 'org.shipkit.shipkit-github-release'
 
 Basic task configuration
 (source: [GithubReleasePluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/gh/release/GithubReleasePluginIntegTest.groovy))
 
 ```groovy
     plugins {
-        id 'org.shipkit.shipkit-gh-release'
-    }
+    id 'org.shipkit.shipkit-github-release'
+}
                 
     tasks.named("githubRelease") {
         repository = "shipkit/shipkit-changelog"
@@ -254,7 +254,7 @@ Complete task configuration
 
 ```groovy
     plugins {
-        id 'org.shipkit.shipkit-gh-release'
+        id 'org.shipkit.shipkit-github-release'
     }
                 
     tasks.named("githubRelease") {
