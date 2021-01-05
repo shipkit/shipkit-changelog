@@ -19,7 +19,7 @@ class GithubReleasePluginIntegTest extends BaseSpecification {
     def "basic task configuration"() {
         file("build.gradle") << """
             plugins {
-                id 'org.shipkit.shipkit-gh-release'
+                id 'org.shipkit.shipkit-github-release'
             }
                         
             tasks.named("githubRelease") {
@@ -37,7 +37,7 @@ class GithubReleasePluginIntegTest extends BaseSpecification {
     def "complete task configuration"() {
         file("build.gradle") << """
             plugins {
-                id 'org.shipkit.shipkit-gh-release'
+                id 'org.shipkit.shipkit-github-release'
             }
                         
             tasks.named("githubRelease") {
@@ -70,7 +70,7 @@ class GithubReleasePluginIntegTest extends BaseSpecification {
 
     def "fails with clean exception"() {
         file("build.gradle") << """
-            plugins { id 'org.shipkit.shipkit-gh-release' }
+            plugins { id 'org.shipkit.shipkit-github-release' }
             version = "1.2.3"
             file("changelog.md") << "Spanking new release!"            
             tasks.named("githubRelease") {
