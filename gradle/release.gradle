@@ -8,11 +8,11 @@ gradlePlugin {
         githubReleaseDeprecated {
             //TODO please remove deprecated plugin after we complete the rename, see #65
             id = 'org.shipkit.shipkit-gh-release'
-            implementationClass = 'org.shipkit.gh.release.GithubReleasePlugin'
+            implementationClass = 'org.shipkit.github.release.GithubReleasePlugin'
         }
         githubRelease {
             id = 'org.shipkit.shipkit-github-release'
-            implementationClass = 'org.shipkit.gh.release.GithubReleasePlugin'
+            implementationClass = 'org.shipkit.github.release.GithubReleasePlugin'
         }
     }
 }
