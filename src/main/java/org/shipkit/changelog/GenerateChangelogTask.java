@@ -5,6 +5,7 @@ import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.*;
+import org.shipkit.github.release.GithubReleaseTask;
 
 import java.io.File;
 import java.util.*;
@@ -159,7 +160,7 @@ public class GenerateChangelogTask extends DefaultTask {
     /**
      * Github token used to pull Github issues.
      * The same token is used to post a new release:
-     * {@link org.shipkit.gh.release.GithubReleaseTask#setGithubToken(String)}
+     * {@link GithubReleaseTask#setGithubToken(String)}
      */
     public void setGithubToken(String githubToken) {
         this.githubToken = githubToken;

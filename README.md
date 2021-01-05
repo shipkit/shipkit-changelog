@@ -234,7 +234,7 @@ Complete task configuration
 ### 'org.shipkit.shipkit-github-release'
 
 Basic task configuration
-(source: [GithubReleasePluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/gh/release/GithubReleasePluginIntegTest.groovy))
+(source: [GithubReleasePluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/github/release/GithubReleasePluginIntegTest.groovy))
 
 ```groovy
     plugins {
@@ -250,7 +250,7 @@ Basic task configuration
 ```
 
 Complete task configuration
-(source: [GithubReleasePluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/gh/release/GithubReleasePluginIntegTest.groovy))
+(source: [GithubReleasePluginIntegTest](https://github.com/shipkit/shipkit-changelog/blob/master/src/integTest/groovy/org/shipkit/github/release/GithubReleasePluginIntegTest.groovy))
 
 ```groovy
     plugins {

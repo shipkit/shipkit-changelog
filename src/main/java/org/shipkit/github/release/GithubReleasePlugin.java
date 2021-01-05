@@ -1,4 +1,4 @@
-package org.shipkit.gh.release;
+package org.shipkit.github.release;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
