@@ -1,5 +1,5 @@
 [![CI](https://github.com/shipkit/shipkit-changelog/workflows/CI/badge.svg)](https://github.com/shipkit/shipkit-changelog/actions)
-[![Gradle Portal](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/org/shipkit/shipkit-changelog/maven-metadata.xml.svg?label=Gradle%20Plugins)](https://plugins.gradle.org/plugin/org.shipkit.shipkit-changelog)
+[![Gradle Plugin Portal](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/org/shipkit/shipkit-changelog/maven-metadata.xml.svg?label=Version)](https://plugins.gradle.org/plugin/org.shipkit.shipkit-changelog)
 
 # Shipkit
 
@@ -32,9 +32,12 @@ Also check out [shipkit-auto-version](https://github.com/shipkit/shipkit-auto-ve
 
 ## Basic usage
 
+Use the *highest* version available in the Gradle Plugin Portal: 
+[![Gradle Plugin Portal](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/org/shipkit/shipkit-changelog/maven-metadata.xml.svg?label=shipkit-changelog)](https://plugins.gradle.org/plugin/org.shipkit.shipkit-changelog)
+
 ```groovy
 plugins {  
-    id 'org.shipkit.shipkit-changelog'
+    id "org.shipkit.shipkit-changelog" version "x.y.z"
 }
 
 tasks.named("generateChangelog") {
@@ -49,13 +52,14 @@ tasks.named("generateChangelog") {
 ## Realistic example
 
 Realistic example, also uses a sibling plugin [shipkit-auto-version](https://github.com/shipkit/shipkit-auto-version) plugin
-(source: [gradle/release.gradle](https://github.com/shipkit/shipkit-changelog/blob/master/gradle/release.gradle))
+at version: [![Gradle Plugin Portal](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/org/shipkit/shipkit-auto-version/maven-metadata.xml.svg?label=shipkit-auto-version)](https://plugins.gradle.org/plugin/org.shipkit.shipkit-auto-version).
+Code sample source: [gradle/release.gradle](https://github.com/shipkit/shipkit-changelog/blob/master/gradle/release.gradle)
 
 ```groovy
     plugins {
-        id 'org.shipkit.shipkit-changelog'
-        id 'org.shipkit.shipkit-github-release'
-        id 'org.shipkit.shipkit-auto-version'
+        id 'org.shipkit.shipkit-changelog' version "x.y.z"
+        id 'org.shipkit.shipkit-github-release' version "x.y.z"
+        id 'org.shipkit.shipkit-auto-version' version "x.y.z"
     }
 
     tasks.named("generateChangelog") {
