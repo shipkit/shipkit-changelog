@@ -291,7 +291,7 @@ This project loves contributions!
 
 ## Testing
 
-In order to test the plugin behavior locally, you need to first *install* the plugin locally,
+In order to test the plugin behavior locally, first you need to *install* the plugin locally,
 and then use the *locally released* version in a selected *test project*.
 Example workflow:
 
