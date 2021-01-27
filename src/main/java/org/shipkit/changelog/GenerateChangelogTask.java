@@ -153,6 +153,7 @@ public class GenerateChangelogTask extends DefaultTask {
      * See {@link #setGithubToken(String)}
      */
     @Input
+    @Optional
     public String getGithubToken() {
         return githubToken;
     }

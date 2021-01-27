@@ -230,7 +230,7 @@ Complete task configuration
         //Repository to look for tickets, *no default*
         repository = "mockito/mockito"
         
-        //Token used for fetching tickets, *no default*
+        //Token used for fetching tickets, *empty*
         githubToken = System.getenv("GITHUB_TOKEN") // using env var to avoid checked-in secrets 
     }              
 ```
