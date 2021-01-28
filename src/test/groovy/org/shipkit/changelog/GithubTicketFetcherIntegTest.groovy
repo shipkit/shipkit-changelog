@@ -1,12 +1,17 @@
 package org.shipkit.changelog
 
+import spock.lang.Ignore
 import spock.lang.Specification
 
 class GithubTicketFetcherIntegTest extends Specification {
 
+    /**
+     * For local development please remove @Ignore and provide your token for GitHub
+     */
+    @Ignore
     def "fetches from Github"() {
         def fetcher = new GithubTicketFetcher("https://api.github.com", "mockito/mockito",
-                "a0a4c0f41c200f7c653323014d6a72a127764e17")
+                "TODO-put-your-own-token-here")
 
         when:
         //TODO: we need to query a repo that is dedicated for this test and validate that pagination works
