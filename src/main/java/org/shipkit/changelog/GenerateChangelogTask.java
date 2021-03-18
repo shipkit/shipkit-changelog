@@ -25,6 +25,7 @@ public class GenerateChangelogTask extends DefaultTask {
     private String repository;
     private String previousRevision;
     private String version;
+    private String releaseTag;
     private String revision;
     private String date;
 
@@ -77,6 +78,22 @@ public class GenerateChangelogTask extends DefaultTask {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    /**
+     * Release tag, for example "v1.2.3".
+     * It is used to construct a GitHub link to a diff between previous revision and the new release tag.
+     */
+    @Input
+    public String getReleaseTag() {
+        return releaseTag;
+    }
+
+    /**
+     * See {@link #getReleaseTag()}
+     */
+    public void setReleaseTag(String releaseTag) {
+        this.releaseTag = releaseTag;
     }
 
     /**
@@ -171,25 +188,29 @@ public class GenerateChangelogTask extends DefaultTask {
         ProcessRunner runner = new ProcessRunner(workingDir);
         GitLogProvider logProvider = new GitLogProvider(runner);
 
-        String previousRevision = this.previousRevision != null? this.previousRevision : "master";
-        LOG.lifecycle("Finding commits between {}..{} in dir: {}", previousRevision, revision, workingDir);
-        Collection<GitCommit> commits = new GitCommitProvider(logProvider).getCommits(previousRevision, revision);
-
-        LOG.lifecycle("Collecting ticket ids from {} commits.", commits.size());
-        List<String> ticketIds = new LinkedList<>();
+        Collection<GitCommit> commits = new LinkedList<>();
+        Collection<Ticket> improvements = new LinkedList<>();
         Set<String> contributors = new TreeSet<>();
-        for (GitCommit c : commits) {
-            ticketIds.addAll(c.getTickets());
-            contributors.add(c.getAuthor());
+
+        if (previousRevision != null) {
+            LOG.lifecycle("Finding commits between {}..{} in dir: {}", previousRevision, revision, workingDir);
+            commits = new GitCommitProvider(logProvider).getCommits(previousRevision, revision);
+
+            LOG.lifecycle("Collecting ticket ids from {} commits.", commits.size());
+            List<String> ticketIds = new LinkedList<>();
+            for (GitCommit c : commits) {
+                ticketIds.addAll(c.getTickets());
+                contributors.add(c.getAuthor());
+            }
+
+            LOG.lifecycle("Fetching ticket info from {}/{} based on {} ids {}", githubApiUrl, repository, ticketIds.size(), ticketIds);
+
+            GithubTicketFetcher fetcher = new GithubTicketFetcher(githubApiUrl, repository, githubToken);
+            improvements = fetcher.fetchTickets(ticketIds);
         }
 
-        LOG.lifecycle("Fetching ticket info from {}/{} based on {} ids {}", githubApiUrl, repository, ticketIds.size(), ticketIds);
-
-        GithubTicketFetcher fetcher = new GithubTicketFetcher(githubApiUrl, repository, githubToken);
-        Collection<Ticket> improvements = fetcher.fetchTickets(ticketIds);
-
         LOG.lifecycle("Generating changelog based on {} tickets from Github", improvements.size());
-        String changelog = ChangelogFormat.formatChangelog(contributors, improvements, commits.size(), version,
+        String changelog = ChangelogFormat.formatChangelog(contributors, improvements, commits.size(), releaseTag, version,
                 previousRevision, githubUrl + "/" + repository, date);
 
         LOG.lifecycle("Saving changelog to file: {}", outputFile);

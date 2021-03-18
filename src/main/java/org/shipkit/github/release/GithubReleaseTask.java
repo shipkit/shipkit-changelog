@@ -54,11 +54,18 @@ public class GithubReleaseTask extends DefaultTask {
         this.releaseName = releaseName;
     }
 
+    /**
+     * Release tag, for example "v1.2.3".
+     * One of the parameters of the GitHub API call that creates GitHub release and the Git tag.
+     */
     @Input
     public String getReleaseTag() {
         return releaseTag;
     }
 
+    /**
+     * See {@link #getReleaseTag()}
+     */
     public void setReleaseTag(String releaseTag) {
         this.releaseTag = releaseTag;
     }

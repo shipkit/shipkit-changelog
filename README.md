@@ -126,6 +126,12 @@ You can read more about all [default env variables](https://docs.github.com/en/f
 Note that you can use *any* CI system, not necessarily Github Actions.
 Just refer to the documentation of your CI system to learn what are its default env variables.
 
+### Tag name convention
+
+By default the plugin assumes "v" prefix notation for tags, for example: "v1.0.0".
+To use a different tag notation, such as "release-1.0.0" or "1.0.0" use `releaseTag` property on the tasks.
+See reference examples.
+
 ## Customers / sample projects
 
 - https://github.com/shipkit/shipkit-demo (great example/reference project)
@@ -225,7 +231,10 @@ Complete task configuration
         revision = "HEAD" 
         
         //The release version, default as below
-        version = project.version             
+        version = project.version
+        
+        //Release tag, by default it is "v" + project.version
+        releaseTag = "v" + project.version
         
         //Repository to look for tickets, *no default*
         repository = "mockito/mockito"
@@ -281,7 +290,10 @@ Complete task configuration
         githubToken = System.getenv("GITHUB_TOKEN") // using env var to avoid checked-in secrets
         
         //SHA of the revision from which release is created; *no default*
-        newTagRevision = System.getenv("GITHUB_SHA")   // using an env var automatically exported by Github Actions        
+        newTagRevision = System.getenv("GITHUB_SHA")   // using an env var automatically exported by Github Actions
+
+        //Release tag, by default it is "v" + project.version
+        releaseTag = "v" + project.version
     }
 ``` 
 

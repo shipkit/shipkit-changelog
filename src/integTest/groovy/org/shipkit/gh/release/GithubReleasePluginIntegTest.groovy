@@ -59,6 +59,9 @@ class GithubReleasePluginIntegTest extends BaseSpecification {
                 //SHA of the revision from which release is created; *no default*
                 newTagRevision = "ff2fb22b3bb2fb08164c126c0e2055d57dee441b"
                 
+                //Release tag, by default it is "v" + project.version
+                releaseTag = "v" + project.version
+                
                 //Github token used for posting to Github API, *no default*
                 githubToken = "secret"
             }
