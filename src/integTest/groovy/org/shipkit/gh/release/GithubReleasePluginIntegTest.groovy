@@ -50,10 +50,7 @@ class GithubReleasePluginIntegTest extends BaseSpecification {
                 //The file with changelog (release notes), *no default*
                 changelog = file("changelog.md")
                 
-                //The name of the release name, default as below
-                releaseName = "v" + project.version
-                
-                //The release tag, default as below
+                //The name of the release, default as below
                 releaseName = "v" + project.version
                 
                 //SHA of the revision from which release is created; *no default*

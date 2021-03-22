@@ -280,11 +280,8 @@ Complete task configuration
         //The file with changelog (release notes), *no default*
         changelog = file("changelog.md")
         
-        //The name of the release name, default as below
+        //The name of the release, default as below
         releaseName = "v" + project.version
-        
-        //The release tag, default as below
-        releaseName = "v" + project.version      
 
         //Github token used for posting to Github API, *no default*
         githubToken = System.getenv("GITHUB_TOKEN") // using env var to avoid checked-in secrets
