@@ -129,8 +129,8 @@ Just refer to the documentation of your CI system to learn what are its default 
 ### Tag name convention
 
 By default the plugin assumes "v" prefix notation for tags, for example: "v1.0.0".
-To use a different tag notation, such as "release-1.0.0" or "1.0.0" use `releaseTag` property on the tasks.
-See reference examples.
+To use a different tag notation, such as "release-1.0.0" or "1.0.0" use `releaseTag` and `releaseName` properties on the tasks.
+See reference code examples.
 
 ## Customers / sample projects
 
