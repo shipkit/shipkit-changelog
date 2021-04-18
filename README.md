@@ -3,7 +3,7 @@
 
 <br>
 <a href="https://github.com/shipkit">
-<img src="https://github.com/shipkit/shipkit-resources/blob/main/images/Shipkit-logo.png" width="240"
+<img src="https://raw.githubusercontent.com/shipkit/shipkit-resources/main/images/Shipkit-logo.png" width="240"
      alt="Shipkit Plugins"/>
 </a>
 
