@@ -31,6 +31,10 @@ public class GithubApi {
         return doRequest(url, "POST", Optional.of(body)).content;
     }
 
+    public String patch(String url, String body) throws IOException {
+        return doRequest(url, "PATCH", Optional.of(body)).content;
+    }
+
     public Response get(String url) throws IOException {
         return doRequest(url, "GET", Optional.empty());
     }
@@ -39,9 +43,15 @@ public class GithubApi {
         URL url = new URL(urlString);
 
         HttpsURLConnection c = (HttpsURLConnection) url.openConnection();
-        c.setRequestMethod(method);
+        //workaround for Java limitation (https://bugs.openjdk.java.net/browse/JDK-7016595), works with GitHub REST API
+        if (method.equals("PATCH")) {
+            c.setRequestMethod("POST");
+        }
         c.setDoOutput(true);
         c.setRequestProperty("Content-Type", "application/json");
+        if (method.equals("PATCH")) {
+            c.setRequestProperty("X-HTTP-Method-Override", "PATCH");
+        }
         if (authToken != null) {
             c.setRequestProperty("Authorization", "token " + authToken);
         }
@@ -83,7 +93,16 @@ public class GithubApi {
             String errorMessage =
                 String.format("%s %s failed, response code = %s, response body:%n%s",
                     method, conn.getURL(), conn.getResponseCode(), IOUtil.readFully(conn.getErrorStream()));
-            throw new IOException(errorMessage);
+            throw new ResponseException(conn.getResponseCode(), errorMessage);
+        }
+    }
+
+    public static class ResponseException extends IOException {
+        public final int responseCode;
+
+        public ResponseException(int responseCode, String errorMessage) {
+            super(errorMessage);
+            this.responseCode = responseCode;
         }
     }
 

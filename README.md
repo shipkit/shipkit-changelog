@@ -19,7 +19,8 @@ Encourage and help software developers set up their releases to be fully automat
 # Shipkit Changelog Gradle plugin
 
 Our plugin generates changelog based on commit history and Github pull requests/issues. 
-Optionally, the changelog content can be posted to Github Releases.
+Optionally, the changelog content can be posted to Github Releases
+(as a new release or updating an existing release for a given tag).
 This plugin is very small (<1kloc) and has a single dependency "com.eclipsesource.minimal-json:minimal-json:0.9.5".
 The dependency is very small (30kb), stable (no changes since 2017), and brings zero transitive dependencies.
 
@@ -182,7 +183,10 @@ Pick the best tool that work for you and start automating releases and changelog
 
 ### Posting Github releases
 
-Uses Github REST API to post releases. 
+Uses Github REST API to post releases.
+First, the code checks if the release _already exists_ for the given tag.
+If it exists, the release notes are updated ([REST doc](https://docs.github.com/en/rest/releases/releases#update-a-release)).
+If not, the new release is created ([REST doc](https://docs.github.com/en/rest/releases/releases#create-a-release)).
 
 ## Usage
 
