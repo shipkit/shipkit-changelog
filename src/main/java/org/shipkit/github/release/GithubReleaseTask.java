@@ -2,6 +2,7 @@ package org.shipkit.github.release;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
 import org.gradle.api.logging.Logger;
@@ -14,6 +15,7 @@ import org.shipkit.changelog.IOUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 public class GithubReleaseTask extends DefaultTask {
 
@@ -142,9 +144,11 @@ public class GithubReleaseTask extends DefaultTask {
         body.add("body", releaseNotesTxt);
 
         GithubApi githubApi = new GithubApi(githubToken);
+
         try {
-            String response = githubApi.post(url, body.toString());
-            String htmlUrl = Json.parse(response).asObject().getString("html_url", "");
+            LOG.lifecycle("Checking if release exists for tag {}...", releaseTag);
+            Optional<Integer> existingRelease = existingRelease(githubApi, url, releaseTag);
+            final String htmlUrl = performRelease(existingRelease, githubApi, url, body.toString());
             LOG.lifecycle("Posted release to Github: " + htmlUrl);
         } catch (IOException e) {
             throw new GradleException("Unable to post release to Github.\n" +
@@ -157,6 +161,50 @@ public class GithubReleaseTask extends DefaultTask {
                     "  * troubleshooting: please run Gradle with '-s' to see the full stack trace or inspect the build scan\n" +
                     "  * thank you for using Shipkit!"
                     , e);
+        }
+    }
+
+    /**
+     * Updates an existing release or creates a new release.
+     * @param existingReleaseId if empty, new release will created.
+     *                          If it contains release ID (internal GH identifier) it will update that release
+     * @param githubApi the GH api object
+     * @param url the url to use
+     * @param body payload
+     * @return String with JSON contents
+     * @throws IOException when something goes wrong with REST call / HTTP connectivity
+     */
+    String performRelease(Optional<Integer> existingReleaseId, GithubApi githubApi, String url, String body) throws IOException {
+        final String htmlUrl;
+        if (existingReleaseId.isPresent()) {
+            LOG.lifecycle("Release already exists for tag {}! Updating the release notes...", releaseTag);
+
+            String response = githubApi.patch(url + "/" + existingReleaseId.get(), body);
+            htmlUrl = Json.parse(response).asObject().getString("html_url", "");
+        } else {
+            String response = githubApi.post(url, body);
+            htmlUrl = Json.parse(response).asObject().getString("html_url", "");
+        }
+        return htmlUrl;
+    }
+
+    /**
+     * Finds out if the release for given tag already exists
+     *
+     * @param githubApi api object
+     * @param url main REST url
+     * @param releaseTag the tag name, will be appended to the url
+     * @return existing release ID or empty optional if there is no release for the given tag
+     * @throws IOException when something goes wrong with REST call / HTTP connectivity
+     */
+    Optional<Integer> existingRelease(GithubApi githubApi, String url, String releaseTag) throws IOException {
+        try {
+            GithubApi.Response r = githubApi.get(url + "/tags/" + releaseTag);
+            JsonValue result = Json.parse(r.getContent());
+            int releaseId = result.asObject().getInt("id", -1);
+            return Optional.of(releaseId);
+        } catch (GithubApi.ResponseException e) {
+            return Optional.empty();
         }
     }
 }
