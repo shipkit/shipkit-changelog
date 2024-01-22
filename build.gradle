@@ -6,7 +6,7 @@ buildscript {
     dependencies {
         classpath "org.shipkit:shipkit-auto-version:1.+"
         classpath "org.shipkit:shipkit-changelog:1.+"
-        classpath "com.gradle.publish:plugin-publish-plugin:0.15.0"
+        classpath "com.gradle.publish:plugin-publish-plugin:1.1.0"
     }
 }
 
