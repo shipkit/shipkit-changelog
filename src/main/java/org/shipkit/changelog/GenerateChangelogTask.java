@@ -139,9 +139,25 @@ public class GenerateChangelogTask extends DefaultTask {
         this.outputFile = outputFile;
     }
 
-    @InputDirectory
+    @Internal
     public File getWorkingDir() {
         return workingDir;
+    }
+
+    @Optional
+    @InputDirectory
+    @PathSensitive(PathSensitivity.RELATIVE)
+    public File getGitDir() {
+        return provideGitDir(workingDir);
+    }
+
+    static File provideGitDir(File workingDir) {
+        if (workingDir == null) {
+            return null;
+        }
+
+        File gitDir = new File(workingDir, ".git");
+        return gitDir.isDirectory() ? gitDir : null;
     }
 
     public void setWorkingDir(File workingDir) {
