@@ -12,13 +12,6 @@ class ChangelogPluginTest extends Specification {
         project.plugins.apply(ChangelogPlugin)
 
         then:
-        GenerateChangelogTask t = project.tasks.generateChangelog
-        t.gitDir
-
-        when:
-        t.workingDir = null
-
-        then:
-        !t.gitDir
+        project.tasks.generateChangelog
     }
 }

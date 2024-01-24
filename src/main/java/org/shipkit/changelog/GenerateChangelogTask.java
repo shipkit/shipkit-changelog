@@ -144,15 +144,20 @@ public class GenerateChangelogTask extends DefaultTask {
         return workingDir;
     }
 
+    @Optional
     @InputDirectory
     @PathSensitive(PathSensitivity.RELATIVE)
     public File getGitDir() {
+        return provideGitDir(workingDir);
+    }
+
+    static File provideGitDir(File workingDir) {
         if (workingDir == null) {
             return null;
         }
-        else {
-            return new File(workingDir, ".git");
-        }
+
+        File gitDir = new File(workingDir, ".git");
+        return gitDir.isDirectory() ? gitDir : null;
     }
 
     public void setWorkingDir(File workingDir) {
