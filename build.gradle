@@ -6,7 +6,7 @@ buildscript {
     dependencies {
         classpath "org.shipkit:shipkit-auto-version:1.+"
         classpath "org.shipkit:shipkit-changelog:1.+"
-        classpath "com.gradle.publish:plugin-publish-plugin:0.15.0"
+        classpath "com.gradle.publish:plugin-publish-plugin:1.2.1"
     }
 }
 
@@ -38,9 +38,9 @@ dependencies {
 
     testImplementation 'junit:junit:4.13.2'
 
-    testImplementation "org.spockframework:spock-core:1.3-groovy-2.5"
+    testImplementation "org.spockframework:spock-core:2.3-groovy-3.0"
     testImplementation "cglib:cglib-nodep:3.3.0" //mocking concrete classes with spock
-    testImplementation "org.objenesis:objenesis:3.2" //as above
+    testImplementation "org.objenesis:objenesis:3.3" //as above
 
     testImplementation gradleTestKit()
 }
